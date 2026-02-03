@@ -1,0 +1,7 @@
+{
+  "name": "Smart Tourism",
+  "description": "Smart Tourism is the best travel agency in India, providing expertly curated domestic tours and luxury international holiday packages with 24/7 human-backed support.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
