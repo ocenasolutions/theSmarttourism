@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-white z-10"></div>
         
         {/* Background Video */}
-        {/* <video
+        <video
           className="w-full h-full object-cover"
           src="/video.mp4"
           autoPlay
@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
           muted
           playsInline
           preload="auto"
-        /> */}
+        />
       </div>
 
       <div className="relative z-20 text-center max-w-5xl mx-auto mb-8 sm:mb-12 w-full">
