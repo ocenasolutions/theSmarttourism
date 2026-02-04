@@ -1,16 +1,45 @@
-
-import React from 'react';
-
-const CITIES = [
-  { name: 'Delhi', img: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?q=80&w=800&auto=format&fit=crop', stays: '2,500+ stays', price: '₹1,499' },
-  { name: 'Goa', img: 'https://images.unsplash.com/photo-1512789170610-500b45cd2704?q=80&w=800&auto=format&fit=crop', stays: '1,800+ stays', price: '₹2,499' },
-  { name: 'Jaipur', img: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?q=80&w=800&auto=format&fit=crop', stays: '1,200+ stays', price: '₹1,999' },
-  { name: 'Mumbai', img: 'https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?q=80&w=800&auto=format&fit=crop', stays: '3,100+ stays', price: '₹2,199' },
-  { name: 'Manali', img: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800&auto=format&fit=crop', stays: '850+ stays', price: '₹1,299' },
-  { name: 'Kerala', img: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=800&auto=format&fit=crop', stays: '1,500+ stays', price: '₹2,899' },
-];
+import React, { useRef } from 'react';
+import { cities } from '../data/popularstaydata';
 
 const PopularStays: React.FC = () => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const scrollAmount = 360;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      
+      if (direction === 'right') {
+        // If at or near the end, loop back to start
+        if (container.scrollLeft >= maxScroll - 10) {
+          container.scrollTo({
+            left: 0,
+            behavior: 'smooth'
+          });
+        } else {
+          container.scrollTo({
+            left: container.scrollLeft + scrollAmount,
+            behavior: 'smooth'
+          });
+        }
+      } else {
+        // If at or near the start, loop to end
+        if (container.scrollLeft <= 10) {
+          container.scrollTo({
+            left: maxScroll,
+            behavior: 'smooth'
+          });
+        } else {
+          container.scrollTo({
+            left: container.scrollLeft - scrollAmount,
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+  };
+
   return (
     <section className="py-24 px-6 bg-white overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
@@ -20,17 +49,28 @@ const PopularStays: React.FC = () => {
             <h3 className="text-4xl md:text-5xl font-extrabold text-charcoal tracking-tight">Cities that Vibe.</h3>
           </div>
           <div className="hidden md:flex gap-4">
-            <button className="size-12 rounded-full border border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-sm">
+            <button 
+              onClick={() => scroll('left')}
+              className="size-12 rounded-full border border-gray-100 flex items-center justify-center hover:bg-gray-50 transition-colors shadow-sm"
+              aria-label="Scroll left"
+            >
               <span className="material-symbols-outlined">west</span>
             </button>
-            <button className="size-12 rounded-full bg-charcoal text-white flex items-center justify-center hover:bg-primary transition-all shadow-xl">
+            <button 
+              onClick={() => scroll('right')}
+              className="size-12 rounded-full bg-charcoal text-white flex items-center justify-center hover:bg-primary transition-all shadow-xl"
+              aria-label="Scroll right"
+            >
               <span className="material-symbols-outlined">east</span>
             </button>
           </div>
         </div>
 
-        <div className="flex gap-8 overflow-x-auto pb-8 hide-scrollbar snap-x">
-          {CITIES.map((city) => (
+        <div 
+          ref={scrollContainerRef}
+          className="flex gap-8 overflow-x-auto pb-8 hide-scrollbar snap-x snap-mandatory"
+        >
+          {cities.map((city) => (
             <div 
               key={city.name} 
               className="min-w-[280px] md:min-w-[340px] snap-start group cursor-pointer"

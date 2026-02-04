@@ -4,8 +4,8 @@ import React from 'react';
 const EXP = [
   { title: 'Adventure Tours', icon: 'surfing', img: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?q=80&w=800&auto=format&fit=crop' },
   { title: 'Bike & Car Rentals', icon: 'directions_bike', img: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=800&auto=format&fit=crop' },
-  { title: 'Paragliding', icon: 'air', img: 'https://images.unsplash.com/photo-1444464666168-49d633b867ad?q=80&w=800&auto=format&fit=crop' },
-  { title: 'Desert Safari', icon: 'beach_access', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop' },
+  { title: 'Paragliding', icon: 'air', img: 'https://i.pinimg.com/1200x/e0/f8/e7/e0f8e789ddf2285958b73c36039f68ab.jpg' },
+  { title: 'Desert Safari', icon: 'beach_access', img: 'https://i.pinimg.com/736x/56/ec/fe/56ecfe02cb41fc25a62dfefa2e7be57e.jpg' },
   { title: 'Trekking Packages', icon: 'hiking', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop' },
 ];
 

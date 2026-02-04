@@ -1,24 +1,10 @@
-
 import React from 'react';
-
-const INDIA_REC = [
-  { name: 'Kashmir', tag: 'Trending 🔥', img: 'https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Leh–Ladakh', tag: 'Adventure 🧗', img: 'https://images.unsplash.com/photo-1581791534721-e599df4417f7?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Udaipur', tag: 'Honeymoon ❤️', img: 'https://images.unsplash.com/photo-1515502847861-15a33945538e?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Rishikesh', tag: 'Spirituality ✨', img: 'https://images.unsplash.com/photo-1598977123418-45003963f429?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Andaman', tag: 'Budget Friendly', img: 'https://images.unsplash.com/photo-1589135410974-dc856247764d?q=80&w=600&auto=format&fit=crop' },
-];
-
-const INT_REC = [
-  { name: 'Dubai', tag: 'Luxury 💎', img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Bali', tag: 'Vibe Check 🌴', img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Thailand', tag: 'Party 🥳', img: 'https://images.unsplash.com/photo-1528181304800-2f140819898f?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Maldives', tag: 'Premium ❤️', img: 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?q=80&w=600&auto=format&fit=crop' },
-  { name: 'Turkey', tag: 'History 🏛️', img: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=600&auto=format&fit=crop' },
-];
+import { indiaRecommendations } from '../data/recommended/indiadata';
+import { internationalRecommendations } from '../data/recommended/internationaldata';
+import type { Destination } from '../data/recommended/indiadata';
 
 const Recommended: React.FC = () => {
-  const Section = ({ title, items }: { title: string, items: typeof INDIA_REC }) => (
+  const Section = ({ title, items }: { title: string, items: Destination[] }) => (
     <div className="mb-24">
       <div className="flex items-center gap-6 mb-12">
         <h4 className="text-xl font-black uppercase tracking-[0.2em] whitespace-nowrap">{title}</h4>
@@ -57,8 +43,8 @@ const Recommended: React.FC = () => {
           </p>
         </div>
         
-        <Section title="🇮🇳 Recommended in India" items={INDIA_REC} />
-        <Section title="🌍 International Picks" items={INT_REC} />
+        <Section title="🇮🇳 Recommended in India" items={indiaRecommendations} />
+        <Section title="🌍 International Picks" items={internationalRecommendations} />
       </div>
     </section>
   );

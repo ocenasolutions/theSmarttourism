@@ -1,5 +1,5 @@
-
 import React from 'react';
+import SearchBox from '../SearchBox/SearchBox';
 
 const BusView: React.FC = () => {
   return (
@@ -26,68 +26,9 @@ const BusView: React.FC = () => {
             </div>
           </div>
 
-          {/* Elevated Request Bar (Airbnb Inspired) */}
+          {/* Elevated Request Bar - Integrated SearchBox */}
           <div className="relative -mt-16 z-10 mx-auto max-w-5xl px-4">
-            <div className="bg-white rounded-full shadow-2xl p-2 md:p-3 flex flex-wrap lg:flex-nowrap items-center border border-white/20">
-              {/* Departure */}
-              <div className="flex-1 min-w-[200px] px-8 py-3 border-r border-gray-100 hover:bg-gray-50 rounded-l-full cursor-pointer transition-colors group">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-black text-gray-400">Departure</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="material-symbols-outlined text-primary text-xl">location_on</span>
-                  <input 
-                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-[#181111] font-bold placeholder:text-gray-300" 
-                    placeholder="Enter city..." 
-                    type="text"
-                  />
-                </div>
-              </div>
-              {/* Destination */}
-              <div className="flex-1 min-w-[200px] px-8 py-3 border-r border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-black text-gray-400">Destination</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="material-symbols-outlined text-primary text-xl">near_me</span>
-                  <input 
-                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-[#181111] font-bold placeholder:text-gray-300" 
-                    placeholder="Where to?" 
-                    type="text"
-                  />
-                </div>
-              </div>
-              {/* Travel Date */}
-              <div className="flex-1 min-w-[180px] px-8 py-3 border-r border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-black text-gray-400">Travel Date</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="material-symbols-outlined text-primary text-xl">calendar_today</span>
-                  <input 
-                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-[#181111] font-bold placeholder:text-gray-300" 
-                    placeholder="Select date" 
-                    type="text"
-                    onFocus={(e) => (e.target.type = 'date')}
-                    onBlur={(e) => (e.target.type = 'text')}
-                  />
-                </div>
-              </div>
-              {/* Group Size */}
-              <div className="flex-1 min-w-[150px] px-8 py-3 hover:bg-gray-50 cursor-pointer transition-colors">
-                <p className="text-[10px] uppercase tracking-[0.2em] font-black text-gray-400">Group Size</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="material-symbols-outlined text-primary text-xl">groups</span>
-                  <input 
-                    className="w-full bg-transparent border-none p-0 focus:ring-0 text-[#181111] font-bold placeholder:text-gray-300" 
-                    min="1" 
-                    placeholder="Add guests" 
-                    type="number"
-                  />
-                </div>
-              </div>
-              {/* CTA Button */}
-              <div className="p-1">
-                <button className="flex items-center justify-center gap-3 bg-primary hover:bg-[#d62b34] text-white font-black h-14 px-8 rounded-full transition-all hover:scale-105 active:scale-95 shadow-xl shadow-primary/30 uppercase tracking-widest text-xs">
-                  <span className="material-symbols-outlined">search</span>
-                  <span className="whitespace-nowrap">Get Quote</span>
-                </button>
-              </div>
-            </div>
+            <SearchBox type="bus" />
           </div>
         </div>
 

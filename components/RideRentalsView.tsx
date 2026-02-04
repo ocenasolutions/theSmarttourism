@@ -1,37 +1,37 @@
+import React, { useState } from 'react';
+import RIDES, { getCars, getBikes, getScooters, getOffRoad } from '../data/RIdeData';
 
-import React from 'react';
-
-const RIDES = [
-  {
-    id: '1',
-    title: 'Midnight Neon',
-    desc: 'Porsche 911 Carrera • Los Angeles',
-    vibe: 'Urban Sleek',
-    price: '$450/day',
-    tag: 'Top Pick: Tulum',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByYmeKP5MkcBdhX2KgK5OKqAnC-dhMTEV6_x25BkAzFrT9FjxySqH85L1c75Mi_Eef41TNoWHulHCKoOo7emCQoPnZZAa2-VPZLkWuAL8fXEWdSOnqKS292zAa8_fMNkHKx_UnKszSoKNA5-QGiip6AgAJDm-MzRj6Cp6oKe6PfmZT8r6h7OX1KGJXKAZdMXzis7ptjjkeRuSyfEzQdUHp0shlH22mZqIkgOHyGViHLidsV7rKT2zY0Izz-aTR6jEsrQGmDdHtixjt'
-  },
-  {
-    id: '2',
-    title: 'Desert Nomad',
-    desc: 'Vintage Land Rover • Joshua Tree',
-    vibe: 'Rugged Vintage',
-    price: '$320/day',
-    tag: 'Rare Find',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDiLyLLBZ56__1_B4D49Vw5SuSpkvxfDo5GbO15RH6t7cGsouzlCP4eQsT0qzt57wzDeN9vlHofe4-KJVjB-_iSafqoZTn9lUEJnW2O0sxp067ai4ROke2OXhDXX5s6KTXlyp5IyqoCRgTj9bWgcsz_37hxnX466wes-krFag_1Qwdh8_seT3yZ6nQ2DXgJwxpyFt1VFazjY5D0TUpZURHvK2uiuHps03ICKFQPZdYTrB_V8tdnSy_P1_tnCqMJ-iJ1RosIQfIkyPdP'
-  },
-  {
-    id: '3',
-    title: 'Coastal Dream',
-    desc: 'Classic Vespa • Amalfi Coast',
-    vibe: 'Summer Chic',
-    price: '$120/day',
-    tag: 'Gen-Z Favorite',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBTOHMNjDWMm3xTx7axdNDgLt-fFG6a5ZKBUMvXGNvXLThr_uLVB7_1Um8BUCIs-lZOkjTpQMuNPWgvJk6m6o7djrRr2hhZ-S0wSlTKv3imtYVinEjKBYtIU_xlk78F6wOLPBIgj_7QwPe_oPyTcFKgTrsOoEgtMxFBj0qaJWyFibgLpQZsxhPt4UExr5WNZ1MEGvks4uSpwFilVUQ6YjkTvTwLMbzre_b_flHYhBQylFeFQo0xLPeKWMsdvemYVNPtKk8rT2jO_3l8'
-  }
-];
+type CategoryType = 'all' | 'cars' | 'bikes' | 'scooters' | 'off-road';
 
 const RideRentalsView: React.FC = () => {
+  const [activeCategory, setActiveCategory] = useState<CategoryType>('all');
+
+  // Get filtered rides based on active category
+  const getFilteredRides = () => {
+    switch (activeCategory) {
+      case 'cars':
+        return getCars();
+      case 'bikes':
+        return getBikes();
+      case 'scooters':
+        return getScooters();
+      case 'off-road':
+        return getOffRoad();
+      default:
+        return RIDES;
+    }
+  };
+
+  const filteredRides = getFilteredRides();
+
+  const categories = [
+    { label: 'All Vehicles', icon: 'grid_view', value: 'all' as CategoryType },
+    { label: 'Cars', icon: 'directions_car', value: 'cars' as CategoryType },
+    { label: 'Bikes', icon: 'two_wheeler', value: 'bikes' as CategoryType },
+    { label: 'Scooters', icon: 'pedal_bike', value: 'scooters' as CategoryType },
+    { label: 'Off-Road', icon: 'terrain', value: 'off-road' as CategoryType },
+  ];
+
   return (
     <div className="bg-[#f8f6f6] min-h-screen pt-20">
       <main className="max-w-[1400px] mx-auto pb-20">
@@ -54,9 +54,9 @@ const RideRentalsView: React.FC = () => {
                 Experience ultimate freedom with our curated collection of luxury convertibles and vintage cruisers. High-fashion, higher vibes.
               </p>
               <div className="flex gap-4 mt-4">
-                <button className="bg-primary hover:bg-[#d62b34] text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest transition-all transform hover:scale-105 shadow-3xl shadow-primary/40">
+                <span className="text-primary font-black text-xs uppercase tracking-widest cursor-pointer hover:opacity-80 transition">
                   Browse Collection
-                </button>
+                </span>
               </div>
             </div>
           </div>
@@ -65,15 +65,15 @@ const RideRentalsView: React.FC = () => {
         {/* Category Tabs */}
         <div className="px-4 md:px-10 mb-12 sticky top-[64px] z-40 bg-[#f8f6f6]/80 backdrop-blur-md py-6">
           <div className="flex items-center gap-12 overflow-x-auto hide-scrollbar border-b border-gray-200">
-            {[
-              { label: 'Luxury Cars', icon: 'directions_car', active: true },
-              { label: 'Bikes & Scooters', icon: 'pedal_bike' },
-              { label: 'Off-Roaders', icon: 'terrain' },
-              { label: 'Watercrafts', icon: 'sailing' },
-            ].map((cat) => (
+            {categories.map((cat) => (
               <button 
-                key={cat.label} 
-                className={`flex items-center gap-3 pb-6 border-b-2 transition-all whitespace-nowrap ${cat.active ? 'border-primary text-primary' : 'border-transparent text-gray-400 hover:text-charcoal'}`}
+                key={cat.value} 
+                onClick={() => setActiveCategory(cat.value)}
+                className={`flex items-center gap-3 pb-6 border-b-2 transition-all whitespace-nowrap ${
+                  activeCategory === cat.value 
+                    ? 'border-primary text-primary' 
+                    : 'border-transparent text-gray-400 hover:text-charcoal'
+                }`}
               >
                 <span className="material-symbols-outlined text-2xl">{cat.icon}</span>
                 <span className="text-xs font-black uppercase tracking-widest">{cat.label}</span>
@@ -85,8 +85,16 @@ const RideRentalsView: React.FC = () => {
         {/* Section Header */}
         <div className="px-4 md:px-10 flex items-end justify-between mb-10">
           <div>
-            <h2 className="text-4xl font-black tracking-tighter text-charcoal uppercase">Curated for the Vibe</h2>
-            <p className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mt-2">Top picks for your next aesthetic getaway</p>
+            <h2 className="text-4xl font-black tracking-tighter text-charcoal uppercase">
+              {activeCategory === 'all' ? 'Curated for the Vibe' : 
+               activeCategory === 'cars' ? 'Cars' :
+               activeCategory === 'bikes' ? 'Power Bikes' :
+               activeCategory === 'scooters' ? 'City Scooters' :
+               'Off-Road Adventures'}
+            </h2>
+            <p className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mt-2">
+              {filteredRides.length} {filteredRides.length === 1 ? 'vehicle' : 'vehicles'} available
+            </p>
           </div>
           <button className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary hover:underline">
             Show all <span className="material-symbols-outlined text-sm">arrow_forward</span>
@@ -95,7 +103,7 @@ const RideRentalsView: React.FC = () => {
 
         {/* Ride Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-4 md:px-10">
-          {RIDES.map((ride) => (
+          {filteredRides.map((ride) => (
             <div key={ride.id} className="group cursor-pointer">
               <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] mb-6 shadow-xl bg-gray-200">
                 <div 
@@ -126,6 +134,15 @@ const RideRentalsView: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* Empty State */}
+        {filteredRides.length === 0 && (
+          <div className="text-center py-20 px-4">
+            <span className="material-symbols-outlined text-6xl text-gray-300 mb-4">search_off</span>
+            <h3 className="text-2xl font-black text-charcoal mb-2">No vehicles found</h3>
+            <p className="text-gray-400">Try selecting a different category</p>
+          </div>
+        )}
 
         {/* Instant Support Section */}
         <div className="mt-32 px-4 md:px-10">
