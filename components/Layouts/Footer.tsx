@@ -15,10 +15,11 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-20 mb-24">
           <div className="md:col-span-5">
             <div className="flex items-center gap-3 mb-10">
-              <div className="bg-primary size-8 rounded-lg flex items-center justify-center rotate-3 shadow-lg shadow-primary/20">
-                <span className="material-symbols-outlined text-white text-xl">travel_explore</span>
-              </div>
-              <h2 className="text-2xl font-black tracking-tighter uppercase italic">Smart Tourism</h2>
+<img
+  src="/logo.png"
+  alt="Smart Tourism Logo"
+  className="w-24 h-24 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+/>              <h2 className="text-2xl font-black tracking-tighter uppercase italic">Smart Tourism</h2>
             </div>
             <p className="text-gray-400 text-sm font-medium max-w-sm mb-10 leading-relaxed">
               Voted as the best travel agency for India and international holiday packages. 

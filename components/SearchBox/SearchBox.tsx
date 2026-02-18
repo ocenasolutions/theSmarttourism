@@ -358,7 +358,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
             >
               <span className="material-symbols-outlined text-primary text-xl flex-shrink-0">location_on</span>
               <div className="flex flex-col text-left flex-1 min-w-0">
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Destination</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">Destination</span>
                 <input 
                   type="text" 
                   value={formData.location}
@@ -370,7 +370,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
                     }
                   }}
                   placeholder="Where to?" 
-                  className="bg-transparent border-none p-0 text-sm font-bold focus:ring-0 placeholder:text-gray-300 w-full"
+className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 placeholder:text-gray-500 w-full"
                   autoComplete="off"
                 />
               </div>
@@ -394,7 +394,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
                   calendar_today
                 </span>
                 <div className="flex flex-col text-left w-full min-w-0">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">
                     Check-in
                   </span>
                   <input
@@ -422,7 +422,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
                   calendar_today
                 </span>
                 <div className="flex flex-col text-left w-full min-w-0">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                  <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">
                     Check-out
                   </span>
                   <input
@@ -447,7 +447,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
                 {type === 'flight' ? 'flight_takeoff' : type === 'train' ? 'train' : 'directions_bus'}
               </span>
               <div className="flex flex-col text-left flex-1 min-w-0">
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">From</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">From</span>
                 <input 
                   type="text" 
                   value={formData.from}
@@ -458,8 +458,8 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
                       fetchLocationSuggestions(formData.from, 'from');
                     }
                   }}
-                  placeholder="Departure City" 
-                  className="bg-transparent border-none p-0 text-sm font-bold focus:ring-0 placeholder:text-gray-300 w-full"
+                  placeholder="From City"
+className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 placeholder:text-gray-500 w-full"
                   autoComplete="off"
                 />
               </div>
@@ -475,7 +475,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
                 {type === 'flight' ? 'flight_land' : 'location_on'}
               </span>
               <div className="flex flex-col text-left flex-1 min-w-0">
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">To</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">To</span>
                 <input 
                   type="text" 
                   value={formData.to}
@@ -486,9 +486,9 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
                       fetchLocationSuggestions(formData.to, 'to');
                     }
                   }}
-                  placeholder="City" 
-                  className="bg-transparent border-none p-0 text-sm font-bold focus:ring-0 placeholder:text-gray-300 w-full"
-                  autoComplete="off"
+                  placeholder="To city"
+className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 placeholder:text-gray-500 w-full"           
+       autoComplete="off"
                 />
               </div>
               {renderSuggestions('to')}
@@ -498,7 +498,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
             <div className="flex-1 flex items-center px-4 md:px-5 py-3 md:py-0 gap-3 md:border-r border-gray-100 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none">
               <span className="material-symbols-outlined text-primary text-xl flex-shrink-0">calendar_today</span>
               <div className="flex flex-col text-left w-full min-w-0">
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Date</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">Date</span>
                 <input 
                   type="date" 
                   value={formData.date}
@@ -516,7 +516,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ type }) => {
           <div className="flex-shrink-0 flex items-center px-4 md:px-5 py-3 md:py-0 gap-3 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none min-w-[120px]">
             <span className="material-symbols-outlined text-primary text-xl flex-shrink-0">groups</span>
             <div className="flex flex-col text-left flex-1 min-w-0">
-              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">
+              <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest whitespace-nowrap">
                 {type === 'hotel' ? 'Guests' : 'Travelers'}
               </span>
               <input 

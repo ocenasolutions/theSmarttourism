@@ -30,10 +30,11 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => onNavigate('home')}
             >
-              <div className="bg-primary size-8 rounded-lg flex items-center justify-center rotate-3 shadow-lg shadow-primary/20">
-                <span className="material-symbols-outlined text-white text-xl">travel_explore</span>
-              </div>
-              <h2 className={`text-xl font-black tracking-tighter transition-colors uppercase italic ${isTourView ? 'text-white' : 'text-charcoal'}`}>
+<img
+  src="/logo.png"
+  alt="Smart Tourism Logo"
+  className="w-24 h-24 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+/>              <h2 className={`text-xl font-black tracking-tighter transition-colors uppercase italic ${isTourView ? 'text-white' : 'text-charcoal'}`}>
                 Smart<span className="text-primary">Tourism</span>
               </h2>
             </div>
@@ -44,9 +45,11 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
             className="hidden lg:flex items-center gap-2 shrink-0 cursor-pointer"
             onClick={() => onNavigate('home')}
           >
-            <div className="bg-primary size-8 rounded-lg flex items-center justify-center rotate-3 shadow-lg shadow-primary/20">
-              <span className="material-symbols-outlined text-white text-xl">travel_explore</span>
-            </div>
+<img
+  src="/logo.png"
+  alt="Smart Tourism Logo"
+  className="w-24 h-24 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+/>
             <h2 className={`text-xl font-black tracking-tighter transition-colors uppercase italic ${isTourView ? 'text-white' : 'text-charcoal'}`}>
               Smart<span className="text-primary">Tourism</span>
             </h2>
