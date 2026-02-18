@@ -71,7 +71,7 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
   const scrollContainer = (direction: 'left' | 'right') => {
     const container = document.getElementById('adventure-scroll');
     if (container) {
-      container.scrollBy({ left: direction === 'left' ? -440 : 440, behavior: 'smooth' });
+      container.scrollBy({ left: direction === 'left' ? -320 : 320, behavior: 'smooth' });
     }
   };
 
@@ -160,27 +160,29 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
       </section>
 
       {/* ── Filter Bar ────────────────────────────────────────── */}
-      <section id="packages-section" className="max-w-7xl mx-auto px-6 pt-16 pb-8">
+      <section id="packages-section" className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
         <div className="flex flex-col gap-6">
 
-          {/* Package type filter */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+          {/* Package type filter + title */}
+          <div className="flex flex-col gap-6">
             <div>
-              <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">
                 High-Energy <br/><span className="text-primary italic">Destinations</span>
               </h2>
-              <p className="text-white/50 mt-6 max-w-md font-medium">
+              <p className="text-white/50 mt-4 max-w-md font-medium text-sm">
                 {total} packages found. Filter to find your perfect trip.
               </p>
             </div>
-            <div className="flex items-center gap-3">
+
+            {/* Type pills + Scroll arrows — now always visible, stacked on mobile */}
+            <div className="flex flex-wrap items-center gap-3">
               {/* Type pills */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 {(['', 'Domestic', 'International'] as const).map((t) => (
                   <button
                     key={t || 'all'}
                     onClick={() => setPkgType(t)}
-                    className={`px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border
+                    className={`px-4 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all border
                       ${pkgType === t
                         ? 'bg-primary border-primary text-white'
                         : 'bg-white/5 border-white/10 text-white/60 hover:border-white/30'
@@ -191,13 +193,23 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                 ))}
               </div>
 
-              {/* Scroll arrows */}
-              <button onClick={() => scrollContainer('left')} className="size-12 rounded-full bg-white/5 hover:bg-primary border border-white/10 flex items-center justify-center transition-all duration-300">
-                <span className="material-symbols-outlined text-white text-sm">west</span>
-              </button>
-              <button onClick={() => scrollContainer('right')} className="size-12 rounded-full bg-white/5 hover:bg-primary border border-white/10 flex items-center justify-center transition-all duration-300">
-                <span className="material-symbols-outlined text-white text-sm">east</span>
-              </button>
+              {/* Scroll arrows — always visible */}
+              <div className="flex gap-2 ml-auto">
+                <button
+                  onClick={() => scrollContainer('left')}
+                  className="size-10 sm:size-12 rounded-full bg-white/5 hover:bg-primary border border-white/10 flex items-center justify-center transition-all duration-300 active:scale-95"
+                  aria-label="Scroll left"
+                >
+                  <span className="material-symbols-outlined text-white text-sm">west</span>
+                </button>
+                <button
+                  onClick={() => scrollContainer('right')}
+                  className="size-10 sm:size-12 rounded-full bg-white/5 hover:bg-primary border border-white/10 flex items-center justify-center transition-all duration-300 active:scale-95"
+                  aria-label="Scroll right"
+                >
+                  <span className="material-symbols-outlined text-white text-sm">east</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -208,7 +220,7 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
               <button
                 key={opt.nights}
                 onClick={() => toggleNight(opt.nights)}
-                className={`px-4 py-1.5 rounded-full text-[11px] font-black transition-all border
+                className={`px-3 sm:px-4 py-1.5 rounded-full text-[11px] font-black transition-all border
                   ${selectedNights.includes(opt.nights)
                     ? 'bg-primary/20 border-primary text-primary'
                     : 'bg-white/5 border-white/10 text-white/50 hover:border-white/25'
@@ -227,7 +239,7 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
       </section>
 
       {/* ── Package Cards ─────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-6 pb-24">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-24">
         {loading ? (
           <div className="flex justify-center items-center py-32">
             <div className="size-12 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -239,16 +251,24 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
             <p className="text-sm mt-2">Try changing your filters</p>
           </div>
         ) : (
-          <div className="relative overflow-hidden">
+          <div className="relative">
             <style dangerouslySetInnerHTML={{__html: `
               #adventure-scroll::-webkit-scrollbar { display: none; }
               #adventure-scroll { -ms-overflow-style: none; scrollbar-width: none; }
             `}} />
-            <div id="adventure-scroll" className="flex gap-8 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory">
+            <div
+              id="adventure-scroll"
+              className="flex gap-4 sm:gap-6 lg:gap-8 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory"
+            >
               {packages.map((pkg: any) => (
                 <div
                   key={pkg._id}
-                  className="group relative aspect-[3/4] min-w-[380px] max-w-[380px] rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 hover:-translate-y-4 snap-center flex-shrink-0"
+                  className="group relative flex-shrink-0 snap-center rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 hover:-translate-y-4"
+                  style={{
+                    /* Responsive card width: ~85vw on mobile, 320px on tablet, 380px on desktop */
+                    width: 'clamp(280px, 82vw, 380px)',
+                    aspectRatio: '3 / 4',
+                  }}
                 >
                   <img
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
@@ -259,8 +279,8 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                   <div className="absolute inset-0 bg-gradient-to-t from-background-dark/95 via-background-dark/20 to-transparent" />
 
                   {/* Tag */}
-                  <div className="absolute top-6 left-6 flex gap-2">
-                    <div className="bg-white/10 backdrop-blur-xl border border-white/10 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-primary">
+                  <div className="absolute top-4 sm:top-6 left-4 sm:left-6 flex gap-2 flex-wrap">
+                    <div className="bg-white/10 backdrop-blur-xl border border-white/10 px-3 sm:px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-primary">
                       {pkg.tag || pkg.packageType}
                     </div>
                     {pkg.isFeatured && (
@@ -272,15 +292,15 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
 
                   {/* Rating */}
                   {pkg.rating > 0 && (
-                    <div className="absolute top-6 right-6 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1">
+                    <div className="absolute top-4 sm:top-6 right-4 sm:right-6 bg-black/50 backdrop-blur-sm px-3 py-1.5 rounded-full flex items-center gap-1">
                       <span className="text-yellow-400 text-xs">★</span>
                       <span className="text-white text-[11px] font-bold">{pkg.rating}</span>
                     </div>
                   )}
 
-                  <div className="absolute bottom-0 left-0 right-0 p-8 transform transition-transform duration-500 group-hover:-translate-y-2">
+                  <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8 transform transition-transform duration-500 group-hover:-translate-y-2">
                     {/* Duration badge */}
-                    <div className="flex items-center gap-2 mb-3">
+                    <div className="flex items-center gap-2 mb-3 flex-wrap">
                       <span className="text-[10px] text-white/50 font-black uppercase tracking-wider bg-white/5 px-3 py-1 rounded-full">
                         {pkg.durationLabel}
                       </span>
@@ -289,14 +309,14 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                       </span>
                     </div>
 
-                    <h3 className="text-3xl font-black mb-2 tracking-tighter uppercase italic leading-tight">{pkg.name}</h3>
+                    <h3 className="text-2xl sm:text-3xl font-black mb-2 tracking-tighter uppercase italic leading-tight">{pkg.name}</h3>
                     <p className="text-white/50 mb-4 text-xs font-medium leading-relaxed line-clamp-2">{pkg.description}</p>
 
                     {/* Price */}
-                    <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center justify-between mb-4 sm:mb-5">
                       <div>
                         <span className="text-[10px] text-white/40 font-black uppercase tracking-wider">Starting from</span>
-                        <p className="text-2xl font-black text-white">₹{pkg.basePrice?.toLocaleString('en-IN')}</p>
+                        <p className="text-xl sm:text-2xl font-black text-white">₹{pkg.basePrice?.toLocaleString('en-IN')}</p>
                         <span className="text-[10px] text-white/30">per person</span>
                       </div>
                       {pkg.reviewCount > 0 && (
@@ -308,14 +328,14 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => openEnquiry(pkg)}
-                        className="flex-1 bg-primary hover:bg-red-600 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-primary/20"
+                        className="flex-1 bg-primary hover:bg-red-600 py-3 sm:py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl shadow-primary/20"
                       >
                         Book Now
                         <span className="material-symbols-outlined text-sm">arrow_forward</span>
                       </button>
                       <button
                         onClick={() => openCustomise(pkg)}
-                        className="px-4 py-4 bg-white/10 hover:bg-white/20 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border border-white/10"
+                        className="px-4 py-3 sm:py-4 bg-white/10 hover:bg-white/20 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border border-white/10"
                         title="Customise Package"
                       >
                         <span className="material-symbols-outlined text-sm">tune</span>
@@ -325,25 +345,30 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                 </div>
               ))}
             </div>
+
+            {/* Mobile scroll hint — shows briefly */}
+            <p className="text-center text-white/20 text-[10px] font-black uppercase tracking-widest mt-3 sm:hidden">
+              ← Swipe to explore →
+            </p>
           </div>
         )}
       </section>
 
       {/* ── Customise Package CTA Section ─────────────────────── */}
-      <section className="max-w-7xl mx-auto px-6 pb-24">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/5 to-transparent border border-primary/20 p-12 text-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pb-24">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-primary/20 via-primary/5 to-transparent border border-primary/20 p-8 sm:p-12 text-center">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/10 to-transparent" />
           <div className="relative z-10">
             <span className="material-symbols-outlined text-primary text-5xl mb-4 block">tune</span>
-            <h3 className="text-4xl md:text-5xl font-black tracking-tighter uppercase italic mb-4">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase italic mb-4">
               Can't find your <span className="text-primary">perfect trip?</span>
             </h3>
-            <p className="text-white/60 max-w-lg mx-auto mb-8 font-medium">
+            <p className="text-white/60 max-w-lg mx-auto mb-8 font-medium text-sm sm:text-base">
               Tell us your dream itinerary — dates, destinations, budget. Our travel experts will craft a bespoke package just for you.
             </p>
             <button
               onClick={() => openCustomise()}
-              className="bg-primary hover:bg-red-600 text-white px-14 py-5 rounded-full text-xs font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-primary/30"
+              className="bg-primary hover:bg-red-600 text-white px-10 sm:px-14 py-4 sm:py-5 rounded-full text-xs font-black uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-primary/30"
             >
               ✨ Customise My Tour Package
             </button>
@@ -367,12 +392,15 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
 
       {/* ── Quick Enquiry Modal ────────────────────────────────── */}
       {enquiryPkg && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setEnquiryPkg(null)}>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4" onClick={() => setEnquiryPkg(null)}>
           <div className="absolute inset-0 bg-black/70 backdrop-blur-md" />
           <div
-            className="relative w-full max-w-md bg-[#0d0d0d] border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-8"
+            className="relative w-full sm:max-w-md bg-[#0d0d0d] border border-white/10 rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8"
             onClick={(e: any) => e.stopPropagation()}
           >
+            {/* drag handle on mobile */}
+            <div className="w-10 h-1 bg-white/20 rounded-full mx-auto mb-5 sm:hidden" />
+
             <button onClick={() => setEnquiryPkg(null)} className="absolute top-5 right-5 size-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
