@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import RIDES, { getCars, getBikes, getScooters, getOffRoad } from '../data/RIdeData';
+import RIDES, { getCars, getBikes, getScooters, getCaravan } from '../data/RIdeData';
 
-type CategoryType = 'all' | 'cars' | 'bikes' | 'scooters' | 'off-road';
+type CategoryType = 'all' | 'cars' | 'bikes' | 'scooters' | 'caravan';
 
 const RideRentalsView: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('all');
@@ -15,8 +15,8 @@ const RideRentalsView: React.FC = () => {
         return getBikes();
       case 'scooters':
         return getScooters();
-      case 'off-road':
-        return getOffRoad();
+      case 'caravan':
+        return getCaravan();
       default:
         return RIDES;
     }
@@ -29,7 +29,7 @@ const RideRentalsView: React.FC = () => {
     { label: 'Cars', icon: 'directions_car', value: 'cars' as CategoryType },
     { label: 'Bikes', icon: 'two_wheeler', value: 'bikes' as CategoryType },
     { label: 'Scooters', icon: 'pedal_bike', value: 'scooters' as CategoryType },
-    { label: 'Off-Road', icon: 'terrain', value: 'off-road' as CategoryType },
+    { label: 'caravan', icon: 'terrain', value: 'caravan' as CategoryType },
   ];
 
   return (
@@ -90,7 +90,7 @@ const RideRentalsView: React.FC = () => {
                activeCategory === 'cars' ? 'Cars' :
                activeCategory === 'bikes' ? 'Power Bikes' :
                activeCategory === 'scooters' ? 'City Scooters' :
-               'Off-Road Adventures'}
+               'caravan'}
             </h2>
             <p className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mt-2">
               {filteredRides.length} {filteredRides.length === 1 ? 'vehicle' : 'vehicles'} available

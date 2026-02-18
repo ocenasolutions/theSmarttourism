@@ -6,7 +6,7 @@ export interface RideData {
   price: string;
   tag: string;
   img: string;
-  category: 'cars' | 'bikes' | 'scooters' | 'off-road';
+  category: 'cars' | 'bikes' | 'scooters' | 'caravan';
 }
 
 export const RIDES: RideData[] = [
@@ -32,36 +32,36 @@ export const RIDES: RideData[] = [
     category: 'bikes'
   },
 
-  // OFF-ROAD
+  // caravan
   {
     id: '3',
-    title: 'Himalayan 450',
-    desc: 'Royal Enfield • Adventure',
-    vibe: 'Off-Road Explorer',
-    price: '₹2,000/day',
-    tag: 'Top Pick: Mountains',
-    img: 'https://i.pinimg.com/736x/f4/15/e9/f415e9baa378e1f8fe3b70231ac64a55.jpg',
-    category: 'off-road'
+  title: 'Tata Winger Caravan',
+  desc: 'Tata Motors • Compact Motorhome',
+  vibe: 'Weekend Escape',
+  price: '₹4,800/day',
+  tag: 'Comfort Travel',
+  img: 'https://i.pinimg.com/736x/70/56/cc/7056cc312090eb6b8b24a1806046dbea.jpg',
+  category: 'caravan'
   },
   {
     id: '4',
-    title: 'Mahindra Thar',
-    desc: 'Mahindra • 4x4 SUV',
-    vibe: 'Rugged Adventure',
-    price: '₹5,500/day',
-    tag: 'Trail Warrior',
-    img: 'https://i.pinimg.com/736x/7b/05/32/7b05320bd6b573e039e7bb0dce43dd81.jpg',
-    category: 'off-road'
+    title: 'Isuzu V-Cross Camper',
+  desc: 'Isuzu • 4x4 Pickup Camper',
+  vibe: 'Offroad Explorer',
+  price: '₹7,200/day',
+  tag: 'Trail Ready',
+  img: 'https://i.pinimg.com/736x/9e/6b/21/9e6b21a4f18b3daef9fa96183728c305.jpg',
+  category: 'caravan'
   },
   {
     id: '5',
-    title: 'Hero XPulse 200',
-    desc: 'Hero • Adventure Bike',
-    vibe: 'Budget Explorer',
-    price: '₹1,200/day',
-    tag: 'Affordable Adventure',
-    img: 'https://i.pinimg.com/736x/71/2b/c4/712bc469a96d486574358dc45c0232a8.jpg',
-    category: 'off-road'
+    title: 'Tempo Traveller Luxury Motorhome',
+  desc: 'Force Motors • Premium 8-Berth',
+  vibe: 'Luxury Roadtrip',
+  price: '₹9,500/day',
+  tag: 'Premium Stay on Wheels',
+  img: 'https://i.pinimg.com/736x/79/ad/d2/79add2b89b0ff49b0f7c792befc2396f.jpg',
+  category: 'caravan'
   },
 
   // CARS
@@ -113,6 +113,6 @@ export const RIDES: RideData[] = [
 export const getCars = () => RIDES.filter(ride => ride.category === 'cars');
 export const getBikes = () => RIDES.filter(ride => ride.category === 'bikes');
 export const getScooters = () => RIDES.filter(ride => ride.category === 'scooters');
-export const getOffRoad = () => RIDES.filter(ride => ride.category === 'off-road');
+export const getCaravan = () => RIDES.filter(ride => ride.category === 'caravan');
 
 export default RIDES;

@@ -16,11 +16,15 @@ import TrainView from './components/Bookings/TrainView';
 
 import TourPackagesView from './components/TourPackagesView';
 import RideRentalsView from './components/RideRentalsView';
+import AdventureView from './components/AdventureView';
 import Support from './components/Support';
 
-const HomeView: React.FC = () => (
+type ViewType = 'home' | 'hotels' | 'flights' | 'bus' | 'train' | 'tour-packages' | 'ride-rentals' | 'adventure' | 'support';
+
+interface HomeViewProps { onNavigate: (view: ViewType) => void; }
+const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => (
   <>
-    <Hero />
+    <Hero onNavigate={onNavigate} />
     <PopularStays />
     <Promotions />
     <TrustBuilder />
@@ -47,7 +51,7 @@ const HomeView: React.FC = () => (
 
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [currentView, setCurrentView] = useState<'home' | 'hotels' | 'flights' | 'bus' | 'train' | 'tour-packages' | 'ride-rentals' | 'support'>('home');
+  const [currentView, setCurrentView] = useState<ViewType>('home');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,27 +65,36 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   }, [currentView]);
 
+  // Views that use dark background
+  const isDarkView = currentView === 'tour-packages' || currentView === 'ride-rentals' || currentView === 'adventure';
+
   return (
-    <div className={`flex flex-col min-h-screen ${currentView === 'tour-packages' ? 'bg-background-dark' : (currentView === 'ride-rentals' ? 'bg-[#f8f6f6]' : 'bg-white')}`}>
+    <div className={`flex flex-col min-h-screen ${
+      currentView === 'tour-packages' ? 'bg-background-dark' :
+      currentView === 'adventure' ? 'bg-background-dark' :
+      currentView === 'ride-rentals' ? 'bg-[#f8f6f6]' :
+      'bg-white'
+    }`}>
       <Navbar 
         scrolled={scrolled} 
-        onNavigate={(view) => setCurrentView(view)}
+        onNavigate={(view) => setCurrentView(view as ViewType)}
         currentView={currentView}
       />
       
       <main className="flex-grow">
-        {currentView === 'home' && <HomeView />}
+        {currentView === 'home' && <HomeView onNavigate={(view) => setCurrentView(view as ViewType)} />}
         {currentView === 'hotels' && <HotelsView />}
         {currentView === 'flights' && <FlightsView />}
         {currentView === 'bus' && <BusView />}
         {currentView === 'train' && <TrainView />}
         {currentView === 'tour-packages' && <TourPackagesView />}
         {currentView === 'ride-rentals' && <RideRentalsView />}
+        {currentView === 'adventure' && <AdventureView />}
         {currentView === 'support' && <Support />}
       </main>
       
-      {currentView !== 'tour-packages' && currentView !== 'ride-rentals' && (
-        <Footer onNavigate={(view) => setCurrentView(view)} />
+      {currentView !== 'tour-packages' && currentView !== 'ride-rentals' && currentView !== 'adventure' && (
+        <Footer onNavigate={(view) => setCurrentView(view as ViewType)} />
       )}
       
       <div className="fixed bottom-6 right-6 z-50">

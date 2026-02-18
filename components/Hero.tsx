@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 import SearchBox from './SearchBox/SearchBox';
 
-const Hero: React.FC = () => {
+type ViewType = 'home' | 'hotels' | 'flights' | 'bus' | 'train' | 'tour-packages' | 'ride-rentals' | 'adventure' | 'support';
+
+interface HeroProps {
+  onNavigate?: (view: ViewType) => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const [activeTab, setActiveTab] = useState<'flight' | 'train' | 'bus' | 'hotel'>('flight');
 
-  const tabs = [
+  const searchTabs = [
     { id: 'flight' as const, label: 'Flights', icon: 'flight' },
     { id: 'train' as const, label: 'Train', icon: 'train' },
     { id: 'bus' as const, label: 'Bus', icon: 'directions_bus' },
     { id: 'hotel' as const, label: 'Hotels', icon: 'hotel' },
+  ];
+
+  const navTabs = [
+    { label: 'Tour Packages', icon: 'work', view: 'tour-packages' as ViewType },
+    { label: 'Ride Rentals', icon: 'vpn_key', view: 'ride-rentals' as ViewType },
+    { label: 'Adventure', icon: 'terrain', view: 'adventure' as ViewType },
   ];
 
   return (
@@ -42,9 +54,10 @@ const Hero: React.FC = () => {
           Curating high-fidelity domestic and international tours with 24/7 human-backed support.
         </p>
 
-        {/* Search Type Tabs */}
+        {/* All Tabs Row */}
         <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 px-2">
-          {tabs.map((tab) => (
+          {/* Search Tabs */}
+          {searchTabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -58,9 +71,29 @@ const Hero: React.FC = () => {
               <span className="whitespace-nowrap">{tab.label}</span>
             </button>
           ))}
+
+          {/* Divider */}
+          <div className="w-px h-9 bg-white/40 self-center hidden sm:block" />
+
+          {/* Nav Tabs — navigate to pages */}
+          {navTabs.map((tab) => (
+            <button
+              key={tab.view}
+              onClick={() => onNavigate?.(tab.view)}
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 hover:shadow-md
+                ${tab.view === 'adventure' ? 'relative' : ''}
+              `}
+            >
+              <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
+              <span className="whitespace-nowrap">{tab.label}</span>
+              {tab.view === 'adventure' && (
+                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary animate-pulse" />
+              )}
+            </button>
+          ))}
         </div>
 
-        {/* Search Box */}
+        {/* Search Box — only shown for search tabs */}
         <div className="w-full max-w-4xl mx-auto">
           <SearchBox type={activeTab} />
         </div>
