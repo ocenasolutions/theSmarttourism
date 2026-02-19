@@ -37,6 +37,20 @@ const DEFAULT_INTERNATIONAL_COUNTRIES = [
     hasPackages: false,
   },
   {
+    name: 'Thailand',
+    tagline: 'Land of Smiles',
+    color: 'from-amber-900/80 to-orange-900/90',
+    coverImage: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=600',
+    hasPackages: false,
+  },
+  {
+    name: 'Dubai',
+    tagline: 'City of Wonders',
+    color: 'from-yellow-900/80 to-amber-900/90',
+    coverImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600',
+    hasPackages: false,
+  },
+  {
     name: 'Iceland',
     tagline: 'Land of Fire & Ice',
     color: 'from-cyan-900/80 to-blue-900/90',
@@ -104,8 +118,6 @@ const AdventureView: React.FC = () => {
   const [packages, setPackages] = useState<AdventurePackage[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Countries always render from DEFAULT_INTERNATIONAL_COUNTRIES
-  // We just update hasPackages from the API
   const [countries, setCountries] = useState<Country[]>(DEFAULT_INTERNATIONAL_COUNTRIES);
 
   const [enquiryPkg, setEnquiryPkg] = useState<AdventurePackage | null>(null);
@@ -115,6 +127,7 @@ const AdventureView: React.FC = () => {
 
   const [detailPkg, setDetailPkg] = useState<AdventurePackage | null>(null);
   const stateScrollRef = useRef<HTMLDivElement>(null);
+  const countryScrollRef = useRef<HTMLDivElement>(null);
 
   // Fetch which regions have packages in the DB, then mark them
   useEffect(() => {
@@ -192,6 +205,10 @@ const AdventureView: React.FC = () => {
     stateScrollRef.current?.scrollBy({ left: dir === 'right' ? 240 : -240, behavior: 'smooth' });
   };
 
+  const scrollCountries = (dir: 'left' | 'right') => {
+    countryScrollRef.current?.scrollBy({ left: dir === 'right' ? 240 : -240, behavior: 'smooth' });
+  };
+
   const selectedCountry = countries.find((c) => c.name === selectedRegion);
 
   return (
@@ -242,7 +259,7 @@ const AdventureView: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           {[
             { val: '5', label: 'States with Adventures' },
-            { val: '5', label: 'International Countries' },
+            { val: '7', label: 'International Countries' },
             { val: '20+', label: 'Unique Experiences' },
             { val: '4.8★', label: 'Average Rating' },
           ].map((s) => (
@@ -364,63 +381,71 @@ const AdventureView: React.FC = () => {
               </p>
             </div>
 
-            {/* Country cards — always rendered from hardcoded data */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-10">
-              {countries.map((country) => {
-                const isSelected = selectedRegion === country.name;
-                return (
-                  <button
-                    key={country.name}
-                    onClick={() => handleRegionSelect(country.name, country.hasPackages)}
-                    className={`group relative rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-500 text-left
-                      ${isSelected
-                        ? 'ring-2 ring-primary scale-[1.03] shadow-2xl shadow-primary/20'
-                        : country.hasPackages
-                          ? 'hover:scale-[1.02] cursor-pointer'
-                          : 'cursor-not-allowed opacity-60'
-                      }`}
-                    style={{ aspectRatio: '3/4', minHeight: '160px' }}
-                  >
-                    {/* Background image with fallback gradient */}
-                    <img
-                      src={country.coverImage}
-                      alt={country.name}
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    {/* Dark gradient overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-t ${country.color}`} style={{ opacity: 0.88 }} />
+            {/* ── Country chips — same layout as state filter ── */}
+            <div className="relative">
+              <button
+                onClick={() => scrollCountries('left')}
+                className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 size-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 items-center justify-center transition-all"
+              >
+                <span className="material-symbols-outlined text-sm">chevron_left</span>
+              </button>
 
-                    {/* Selected ring */}
-                    {isSelected && <div className="absolute inset-0 border-2 border-primary rounded-2xl sm:rounded-3xl pointer-events-none" />}
-
-                    {/* Coming soon badge */}
-                    {!country.hasPackages && (
-                      <div className="absolute top-3 right-3 bg-black/50 backdrop-blur-sm px-2 py-1 rounded-full text-[9px] font-black uppercase text-white/50">Soon</div>
-                    )}
-
-                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5">
-                      <h3 className="text-sm sm:text-base md:text-lg font-black tracking-tight uppercase leading-tight">
-                        {country.name}
-                      </h3>
-                      <p className="text-white/70 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mt-0.5">
-                        {country.tagline}
-                      </p>
-                      {isSelected && (
-                        <div className="mt-2 text-[9px] sm:text-[10px] text-primary font-black uppercase tracking-widest flex items-center gap-1">
-                          <span className="material-symbols-outlined text-xs sm:text-sm">check_circle</span>Selected
-                        </div>
+              <div
+                ref={countryScrollRef}
+                className="flex gap-3 overflow-x-auto pb-2 px-1 sm:px-6"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {countries.map((country) => {
+                  const isSelected = selectedRegion === country.name;
+                  return (
+                    <button
+                      key={country.name}
+                      onClick={() => handleRegionSelect(country.name, country.hasPackages)}
+                      disabled={!country.hasPackages}
+                      className={`group flex-shrink-0 flex items-center gap-2.5 rounded-full px-4 py-3 border transition-all duration-200 whitespace-nowrap
+                        ${isSelected
+                          ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30 scale-105'
+                          : country.hasPackages
+                            ? 'bg-white/8 border-primary/30 text-white hover:bg-primary/15 hover:border-primary/60 cursor-pointer hover:scale-105'
+                            : 'bg-white/3 border-white/5 text-white/30 cursor-not-allowed'
+                        }`}
+                    >
+                      <span className="text-sm font-bold">{country.name}</span>
+                      {/* Tagline shown as subdued suffix on desktop */}
+                      <span className={`text-[10px] font-medium hidden sm:inline ${isSelected ? 'text-white/70' : 'text-white/30'}`}>
+                        · {country.tagline}
+                      </span>
+                      {country.hasPackages && !isSelected && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                       )}
-                    </div>
-                  </button>
-                );
-              })}
+                      {isSelected && (
+                        <span className="material-symbols-outlined text-sm">check</span>
+                      )}
+                      {!country.hasPackages && (
+                        <span className="text-[9px] text-white/20 font-black uppercase">Soon</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button
+                onClick={() => scrollCountries('right')}
+                className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 size-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 items-center justify-center transition-all"
+              >
+                <span className="material-symbols-outlined text-sm">chevron_right</span>
+              </button>
             </div>
+            <p className="text-center text-[11px] text-white/20 font-medium mt-3 sm:hidden">← Swipe to see more countries →</p>
 
             {/* Country packages */}
             {selectedRegion && selectedCountry && (
-              <div>
+              <div className="mt-12">
                 <div className="flex items-center gap-4 mb-8 flex-wrap">
-                  <button onClick={() => { setSelectedRegion(null); setPackages([]); }} className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm font-bold">
+                  <button
+                    onClick={() => { setSelectedRegion(null); setPackages([]); }}
+                    className="flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm font-bold"
+                  >
                     <span className="material-symbols-outlined text-lg">arrow_back</span>All Countries
                   </button>
                   <div className="h-px flex-1 bg-white/10 hidden sm:block" />
@@ -429,7 +454,9 @@ const AdventureView: React.FC = () => {
                   </h3>
                 </div>
                 {loading ? (
-                  <div className="flex justify-center py-24"><div className="size-12 border-2 border-primary border-t-transparent rounded-full animate-spin" /></div>
+                  <div className="flex justify-center py-24">
+                    <div className="size-12 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  </div>
                 ) : packages.length === 0 ? (
                   <div className="text-center py-24 text-white/30">
                     <p className="text-xl font-black">No packages yet</p>

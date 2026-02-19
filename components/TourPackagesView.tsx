@@ -50,6 +50,20 @@ const DEFAULT_INTERNATIONAL_COUNTRIES = [
     hasPackages: true,
   },
   {
+    name: 'Thailand',
+    tagline: 'Land of Smiles',
+    color: 'from-amber-900/80 to-orange-900/90',
+    coverImage: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=600',
+    hasPackages: false,
+  },
+  {
+    name: 'Dubai',
+    tagline: 'City of Wonders',
+    color: 'from-yellow-900/80 to-amber-900/90',
+    coverImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600',
+    hasPackages: false,
+  },
+  {
     name: 'Iceland',
     tagline: 'Land of Fire & Ice',
     color: 'from-cyan-900/80 to-blue-900/90',
@@ -105,8 +119,9 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
   const [enquiryDone, setEnquiryDone] = useState(false);
 
   const stateScrollRef = useRef<HTMLDivElement>(null);
+  const countryScrollRef = useRef<HTMLDivElement>(null);
 
-  // ── Fetch packages — original API, region added as extra param ─
+  // ── Fetch packages ─────────────────────────────────────────
   const fetchPackages = useCallback(async () => {
     setLoading(true);
     try {
@@ -143,7 +158,6 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
     );
   };
 
-  // Toggle region — click again to deselect
   const handleRegionSelect = (region: string, hasPackages = true) => {
     if (!hasPackages) return;
     setSelectedRegion((prev) => (prev === region ? null : region));
@@ -156,6 +170,10 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
 
   const scrollStates = (dir: 'left' | 'right') => {
     stateScrollRef.current?.scrollBy({ left: dir === 'right' ? 240 : -240, behavior: 'smooth' });
+  };
+
+  const scrollCountries = (dir: 'left' | 'right') => {
+    countryScrollRef.current?.scrollBy({ left: dir === 'right' ? 240 : -240, behavior: 'smooth' });
   };
 
   const openCustomise = (pkg: any = null) => {
@@ -354,66 +372,68 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
             </div>
           )}
 
-          {/* ── Country cards — shown when All or International ── */}
+          {/* ── Country chips — shown when All or International ── */}
           {(pkgType === '' || pkgType === 'International') && (
             <div>
               <p className="text-[11px] text-white/40 font-black uppercase tracking-wider mb-3">
                 Filter by Country:
               </p>
-              <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-                {DEFAULT_INTERNATIONAL_COUNTRIES.map((country) => {
-                  const isSelected = selectedRegion === country.name;
-                  return (
-                    <button
-                      key={country.name}
-                      onClick={() => handleRegionSelect(country.name, country.hasPackages)}
-                      className={`group relative rounded-2xl overflow-hidden transition-all duration-500 text-left
-                        ${isSelected
-                          ? 'ring-2 ring-primary scale-[1.03] shadow-2xl shadow-primary/20'
-                          : country.hasPackages
-                            ? 'hover:scale-[1.02] cursor-pointer'
-                            : 'cursor-not-allowed opacity-50'
-                        }`}
-                      style={{ aspectRatio: '3/4', minHeight: '120px' }}
-                    >
-                      <img
-                        src={country.coverImage}
-                        alt={country.name}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div
-                        className={`absolute inset-0 bg-gradient-to-t ${country.color}`}
-                        style={{ opacity: 0.88 }}
-                      />
+              <div className="relative">
+                <button
+                  onClick={() => scrollCountries('left')}
+                  className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 size-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 items-center justify-center transition-all"
+                >
+                  <span className="material-symbols-outlined text-sm">chevron_left</span>
+                </button>
 
-                      {isSelected && (
-                        <div className="absolute inset-0 border-2 border-primary rounded-2xl pointer-events-none" />
-                      )}
-
-                      {!country.hasPackages && (
-                        <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-sm px-2 py-0.5 rounded-full text-[8px] font-black uppercase text-white/50">
-                          Soon
-                        </div>
-                      )}
-
-                      <div className="absolute bottom-0 left-0 right-0 p-2.5 sm:p-4">
-                        <h3 className="text-xs sm:text-sm font-black tracking-tight uppercase leading-tight">
-                          {country.name}
-                        </h3>
-                        <p className="text-white/60 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider mt-0.5 hidden sm:block">
-                          {country.tagline}
-                        </p>
-                        {isSelected && (
-                          <div className="mt-1 text-[9px] text-primary font-black uppercase tracking-widest flex items-center gap-1">
-                            <span className="material-symbols-outlined text-xs">check_circle</span>
-                            Selected
-                          </div>
+                <div
+                  ref={countryScrollRef}
+                  className="flex gap-3 overflow-x-auto pb-2 px-1 sm:px-6"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  {DEFAULT_INTERNATIONAL_COUNTRIES.map((country) => {
+                    const isSelected = selectedRegion === country.name;
+                    return (
+                      <button
+                        key={country.name}
+                        onClick={() => handleRegionSelect(country.name, country.hasPackages)}
+                        disabled={!country.hasPackages}
+                        className={`group flex-shrink-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 border transition-all duration-200 whitespace-nowrap
+                          ${isSelected
+                            ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30 scale-105'
+                            : country.hasPackages
+                              ? 'bg-white/5 border-primary/30 text-white hover:bg-primary/15 hover:border-primary/60 cursor-pointer hover:scale-105'
+                              : 'bg-white/3 border-white/5 text-white/30 cursor-not-allowed'
+                          }`}
+                      >
+                        <span className="text-sm font-bold">{country.name}</span>
+                        <span className={`text-[10px] font-medium hidden sm:inline ${isSelected ? 'text-white/70' : 'text-white/30'}`}>
+                          · {country.tagline}
+                        </span>
+                        {country.hasPackages && !isSelected && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                         )}
-                      </div>
-                    </button>
-                  );
-                })}
+                        {isSelected && (
+                          <span className="material-symbols-outlined text-sm">check</span>
+                        )}
+                        {!country.hasPackages && (
+                          <span className="text-[9px] text-white/20 font-black uppercase">Soon</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => scrollCountries('right')}
+                  className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 size-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 items-center justify-center transition-all"
+                >
+                  <span className="material-symbols-outlined text-sm">chevron_right</span>
+                </button>
               </div>
+              <p className="text-center text-[11px] text-white/20 font-medium mt-2 sm:hidden">
+                ← Swipe to see more countries →
+              </p>
             </div>
           )}
 

@@ -82,9 +82,6 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             >
               <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
               <span>{tab.label}</span>
-              {tab.view === 'adventure' && (
-                <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary animate-pulse" />
-              )}
             </button>
           ))}
         </div>
