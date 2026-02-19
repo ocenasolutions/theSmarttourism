@@ -76,10 +76,6 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
                   {item.icon}
                 </span>
                 <span className="whitespace-nowrap">{item.label}</span>
-                {/* Adventure indicator dot */}
-                {item.view === 'adventure' && currentView !== 'adventure' && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary animate-pulse" />
-                )}
               </button>
             ))}
           </nav>

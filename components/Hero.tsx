@@ -29,7 +29,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <div className="absolute inset-0 z-0">
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-white z-10"></div>
-        
+
         {/* Background Video */}
         <video
           className="w-full h-full object-cover"
@@ -54,9 +54,8 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           Curating high-fidelity domestic and international tours with 24/7 human-backed support.
         </p>
 
-        {/* All Tabs Row */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 px-2">
-          {/* Search Tabs */}
+        {/* Row 1: Search Tabs */}
+        <div className="flex justify-center gap-2 sm:gap-3 mb-2.5 px-2">
           {searchTabs.map((tab) => (
             <button
               key={tab.id}
@@ -71,21 +70,18 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               <span className="whitespace-nowrap">{tab.label}</span>
             </button>
           ))}
+        </div>
 
-          {/* Divider */}
-          <div className="w-px h-9 bg-white/40 self-center hidden sm:block" />
-
-          {/* Nav Tabs — navigate to pages */}
+        {/* Row 2: Nav Tabs — always single line, shrink-to-fit on mobile */}
+        <div className="flex justify-center gap-2 sm:gap-3 mb-6 px-2">
           {navTabs.map((tab) => (
             <button
               key={tab.view}
               onClick={() => onNavigate?.(tab.view)}
-              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 hover:shadow-md
-                ${tab.view === 'adventure' ? 'relative' : ''}
-              `}
+              className={`relative flex items-center gap-1 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 hover:shadow-md whitespace-nowrap`}
             >
               <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
-              <span className="whitespace-nowrap">{tab.label}</span>
+              <span>{tab.label}</span>
               {tab.view === 'adventure' && (
                 <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary animate-pulse" />
               )}
