@@ -48,12 +48,12 @@ const initialForm = {
   children:       0,
   infants:        0,
   pickupLocation: '',
-  pickupTime:     '',
+  pickupTime:     '12:00',
   pickupMode:     'Flight' as TravelMode,
   pickupSubType:  'Economy',
   pickupTaxi:     'Swift Dzire (4 Seater)',
   dropLocation:   '',
-  dropTime:       '',
+  dropTime:       '12:00',
   dropMode:       'Flight' as TravelMode,
   dropSubType:    'Economy',
   dropTaxi:       'Swift Dzire (4 Seater)',
@@ -279,13 +279,7 @@ export default function CustomisePackageModal({ isOpen, onClose, package: pkg = 
   const set = (field: string, value: any) => setForm((f) => ({ ...f, [field]: value }));
 
   /** Format time for display (12h) */
-  const formatTime = (t: string) => {
-    if (!t) return '—';
-    const [h, m] = t.split(':').map(Number);
-    const ampm = h >= 12 ? 'PM' : 'AM';
-    const hour = h % 12 || 12;
-    return `${hour}:${String(m).padStart(2, '0')} ${ampm}`;
-  };
+  const formatTime = (t: string) => t || '00:00';
 
   /** Human-readable label for summary */
   const modeLabel = (mode: string, subType: string, taxi: string) => {
