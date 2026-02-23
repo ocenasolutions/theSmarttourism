@@ -72,19 +72,19 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           ))}
         </div>
 
-        {/* Row 2: Nav Tabs — always single line, shrink-to-fit on mobile */}
-        <div className="flex justify-center gap-2 sm:gap-3 mb-6 px-2">
-          {navTabs.map((tab) => (
-            <button
-              key={tab.view}
-              onClick={() => onNavigate?.(tab.view)}
-              className={`relative flex items-center gap-1 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 hover:shadow-md whitespace-nowrap`}
-            >
-              <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </div>
+        {/* Row 2: Nav Tabs */}
+<div className="flex justify-center gap-2 sm:gap-3 mb-6 px-2">
+  {navTabs.map((tab) => (
+    <button
+      key={tab.view}
+      onClick={() => onNavigate?.(tab.view)}
+      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-md whitespace-nowrap"
+    >
+      <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
+      <span>{tab.label}</span>
+    </button>
+  ))}
+</div>
 
         {/* Search Box — only shown for search tabs */}
         <div className="w-full max-w-4xl mx-auto">

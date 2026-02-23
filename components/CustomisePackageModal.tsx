@@ -32,7 +32,7 @@ function subTypesFor(mode: TravelMode): string[] | null {
   if (mode === 'Train')           return TRAIN_CLASSES;
   if (mode === 'Bus')             return BUS_CLASSES;
   if (mode === 'Tempo Traveller') return TEMPO_VARIANTS;
-  return null; // Taxi — handled separately with vehicle list
+  return null;
 }
 
 function defaultSubType(mode: TravelMode): string {
@@ -48,10 +48,12 @@ const initialForm = {
   children:       0,
   infants:        0,
   pickupLocation: '',
+  pickupTime:     '',
   pickupMode:     'Flight' as TravelMode,
   pickupSubType:  'Economy',
   pickupTaxi:     'Swift Dzire (4 Seater)',
   dropLocation:   '',
+  dropTime:       '',
   dropMode:       'Flight' as TravelMode,
   dropSubType:    'Economy',
   dropTaxi:       'Swift Dzire (4 Seater)',
@@ -98,12 +100,42 @@ const ChipLabel = ({ text }: { text: string }) => (
   <span className="text-[10px] text-white/30 font-black uppercase tracking-wider self-center mr-1">{text}</span>
 );
 
-/** Full transport picker for one direction - MOVED OUTSIDE */
+// ── Clock Icon SVG ─────────────────────────────────────────────
+const ClockIcon = () => (
+  <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-primary shrink-0">
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
+  </svg>
+);
+
+// ── Time Picker Field ──────────────────────────────────────────
+const TimePicker = ({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) => (
+  <div>
+    <label className="block text-[11px] text-white/40 mb-1.5">{label}</label>
+    <div className="relative flex items-center">
+      {/* clock icon overlay */}
+      <span className="absolute left-3 pointer-events-none">
+        <ClockIcon />
+      </span>
+      <input
+        type="time"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`${inputCls} pl-10 [color-scheme:dark] cursor-pointer`}
+        style={{ colorScheme: 'dark' }}
+      />
+    </div>
+  </div>
+);
+
+/** Full transport picker for one direction */
 const TransportPicker = ({
   sectionTitle,
   locationPlaceholder,
   locationValue,
   onLocationChange,
+  timeValue,
+  onTimeChange,
   mode,
   onModeChange,
   subType,
@@ -115,6 +147,8 @@ const TransportPicker = ({
   locationPlaceholder: string;
   locationValue: string;
   onLocationChange: (value: string) => void;
+  timeValue: string;
+  onTimeChange: (value: string) => void;
   mode: TravelMode;
   onModeChange: (mode: TravelMode, defaultSubType: string) => void;
   subType: string;
@@ -128,16 +162,37 @@ const TransportPicker = ({
     <div>
       <SectionLabel>{sectionTitle}</SectionLabel>
 
-      {/* Location input */}
-      <input
-        type="text"
-        placeholder={locationPlaceholder}
-        value={locationValue}
-        onChange={(e) => onLocationChange(e.target.value)}
-        className={`${inputCls} mb-3`}
-      />
+      {/* Location + Time row */}
+      <div className="grid grid-cols-[1fr_auto] gap-3 mb-3 items-start">
+        <input
+          type="text"
+          placeholder={locationPlaceholder}
+          value={locationValue}
+          onChange={(e) => onLocationChange(e.target.value)}
+          className={inputCls}
+        />
+        {/* Time picker — compact, fixed width */}
+        <div className="w-[140px]">
+          <div className="relative flex items-center">
+            <span className="absolute left-3 pointer-events-none z-10">
+              <ClockIcon />
+            </span>
+            <input
+              type="time"
+              value={timeValue}
+              onChange={(e) => onTimeChange(e.target.value)}
+              title={`${sectionTitle} Time`}
+              className={`${inputCls} pl-10 [color-scheme:dark] cursor-pointer`}
+              style={{ colorScheme: 'dark' }}
+            />
+          </div>
+          <p className="text-[10px] text-white/30 mt-1 pl-1 text-center">
+            {sectionTitle.includes('Pickup') ? 'Pickup Time' : 'Drop Time'}
+          </p>
+        </div>
+      </div>
 
-      {/* Mode pills — wraps on small screens */}
+      {/* Mode pills */}
       <div className="flex flex-wrap gap-2 mb-3">
         {TRAVEL_MODES.map((m) => (
           <label
@@ -160,7 +215,7 @@ const TransportPicker = ({
         ))}
       </div>
 
-      {/* Sub-type chips: Flight / Train / Bus / Tempo Traveller */}
+      {/* Sub-type chips */}
       {subTypes && (
         <div className="flex gap-2 flex-wrap items-center pl-1 mb-1">
           <ChipLabel text={mode === 'Tempo Traveller' ? 'Variant:' : 'Class:'} />
@@ -223,6 +278,15 @@ export default function CustomisePackageModal({ isOpen, onClose, package: pkg = 
   const totalPersons = form.adults + form.children + form.infants;
   const set = (field: string, value: any) => setForm((f) => ({ ...f, [field]: value }));
 
+  /** Format time for display (12h) */
+  const formatTime = (t: string) => {
+    if (!t) return '—';
+    const [h, m] = t.split(':').map(Number);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    const hour = h % 12 || 12;
+    return `${hour}:${String(m).padStart(2, '0')} ${ampm}`;
+  };
+
   /** Human-readable label for summary */
   const modeLabel = (mode: string, subType: string, taxi: string) => {
     if (mode === 'Taxi')           return `Taxi · ${taxi}`;
@@ -238,6 +302,8 @@ export default function CustomisePackageModal({ isOpen, onClose, package: pkg = 
         packageId:      pkg?._id || null,
         pickupDisplay:  modeLabel(form.pickupMode, form.pickupSubType, form.pickupTaxi),
         dropDisplay:    modeLabel(form.dropMode,   form.dropSubType,   form.dropTaxi),
+        pickupTimeFormatted: formatTime(form.pickupTime),
+        dropTimeFormatted:   formatTime(form.dropTime),
       };
       const res  = await fetch(`${API_URL}/bookings/custom`, {
         method:  'POST',
@@ -337,12 +403,12 @@ export default function CustomisePackageModal({ isOpen, onClose, package: pkg = 
                   <div>
                     <label className="block text-[11px] text-white/40 mb-1.5">Start Date</label>
                     <input type="date" value={form.startDate} onChange={(e) => set('startDate', e.target.value)}
-                      className={inputCls} min={new Date().toISOString().split('T')[0]} />
+                      className={`${inputCls} [color-scheme:dark]`} min={new Date().toISOString().split('T')[0]} />
                   </div>
                   <div>
                     <label className="block text-[11px] text-white/40 mb-1.5">End Date</label>
                     <input type="date" value={form.endDate} onChange={(e) => set('endDate', e.target.value)}
-                      className={inputCls} min={form.startDate || new Date().toISOString().split('T')[0]} />
+                      className={`${inputCls} [color-scheme:dark]`} min={form.startDate || new Date().toISOString().split('T')[0]} />
                   </div>
                 </div>
               </div>
@@ -365,6 +431,8 @@ export default function CustomisePackageModal({ isOpen, onClose, package: pkg = 
                 locationPlaceholder="Pickup Location (city / airport)"
                 locationValue={form.pickupLocation}
                 onLocationChange={(val) => set('pickupLocation', val)}
+                timeValue={form.pickupTime}
+                onTimeChange={(val) => set('pickupTime', val)}
                 mode={form.pickupMode}
                 onModeChange={(mode, defaultSub) => {
                   set('pickupMode', mode);
@@ -381,6 +449,8 @@ export default function CustomisePackageModal({ isOpen, onClose, package: pkg = 
                 locationPlaceholder="Drop Location (city / airport)"
                 locationValue={form.dropLocation}
                 onLocationChange={(val) => set('dropLocation', val)}
+                timeValue={form.dropTime}
+                onTimeChange={(val) => set('dropTime', val)}
                 mode={form.dropMode}
                 onModeChange={(mode, defaultSub) => {
                   set('dropMode', mode);
@@ -449,18 +519,28 @@ export default function CustomisePackageModal({ isOpen, onClose, package: pkg = 
                 </div>
               </div>
 
+              {/* ── Summary card ─────────────────────────────── */}
               <div className="bg-white/5 rounded-2xl p-5 space-y-2 text-sm">
                 <p className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-3">Booking Summary</p>
                 {([
-                  ['Type',       form.packageType],
-                  ['Travellers', `${totalPersons} persons`],
-                  ['Pickup',     `${form.pickupLocation || '—'} · ${modeLabel(form.pickupMode, form.pickupSubType, form.pickupTaxi)}`],
-                  ['Drop',       `${form.dropLocation   || '—'} · ${modeLabel(form.dropMode,   form.dropSubType,   form.dropTaxi)}`],
-                  ['Hotel',      form.hotelCategory],
-                  ['Meals',      form.mealPlan],
+                  ['Type',          form.packageType],
+                  ['Travellers',    `${totalPersons} persons`],
+                  ['Pickup',        `${form.pickupLocation || '—'} · ${modeLabel(form.pickupMode, form.pickupSubType, form.pickupTaxi)}`],
+                  ['Pickup Time',   formatTime(form.pickupTime)],
+                  ['Drop',          `${form.dropLocation   || '—'} · ${modeLabel(form.dropMode,   form.dropSubType,   form.dropTaxi)}`],
+                  ['Drop Time',     formatTime(form.dropTime)],
+                  ['Hotel',         form.hotelCategory],
+                  ['Meals',         form.mealPlan],
                 ] as [string, string][]).map(([k, v]) => (
                   <div key={k} className="flex justify-between text-white/70">
-                    <span>{k}</span>
+                    <span className="flex items-center gap-1.5">
+                      {(k === 'Pickup Time' || k === 'Drop Time') && (
+                        <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" className="text-primary inline">
+                          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                      )}
+                      {k}
+                    </span>
                     <span className="text-white font-semibold truncate max-w-[200px] text-right">{v}</span>
                   </div>
                 ))}
