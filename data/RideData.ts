@@ -58,7 +58,7 @@ export const RIDES: RideData[] = [
     vibe: 'Trail Adventure',
     price: '₹200/hour',
     tag: 'Off-Road Fun',
-    img: 'https://i.pinimg.com/736x/1c/a5/20/1ca520050c187ca82c273f1e0dc5f144.jpg',
+    img: 'https://i.pinimg.com/736x/04/f4/a7/04f4a7a831f5b1fffe6e3b327914b7d1.jpg',
     category: 'bikes'
   },
 
