@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Footer from './Layouts/Footer';
 import CustomisePackageModal from './CustomisePackageModal';
 import { API_URL } from '@/config/api';
+import { ALL_INDIAN_STATES, getCitiesForState } from '@/data/indianLocations';
 
 // Duration options matching backend schema
 const DURATION_OPTIONS = [
@@ -13,77 +14,6 @@ const DURATION_OPTIONS = [
   { label: '7N 8D', nights: 7 },
   { label: '8N 9D', nights: 8 },
   { label: '9N 10D', nights: 9 },
-];
-
-// ── Domestic States ──────────────────────────────────────────────────────────
-const ALL_INDIAN_STATES = [
-  'Himachal Pradesh',
-  'Uttarakhand',
-  'Rajasthan',
-  'Meghalaya',
-  'Goa',
-  'Kerala',
-  'Sikkim',
-  'Andaman & Nicobar',
-  'Jammu & Kashmir',
-  'Arunachal Pradesh',
-];
-
-const STATES_WITH_PACKAGES = new Set([
-  'Himachal Pradesh', 'Uttarakhand', 'Rajasthan', 'Meghalaya', 'Goa',
-]);
-
-// ── International Countries ──────────────────────────────────────────────────
-const DEFAULT_INTERNATIONAL_COUNTRIES = [
-  {
-    name: 'Nepal',
-    tagline: 'Roof of the World',
-    color: 'from-blue-900/80 to-slate-900/90',
-    coverImage: 'https://images.unsplash.com/photo-1544198365-f5d60b6d8190?w=600',
-    hasPackages: true,
-  },
-  {
-    name: 'Bali, Indonesia',
-    tagline: 'Island of Gods',
-    color: 'from-emerald-900/80 to-teal-900/90',
-    coverImage: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600',
-    hasPackages: true,
-  },
-  {
-    name: 'Thailand',
-    tagline: 'Land of Smiles',
-    color: 'from-amber-900/80 to-orange-900/90',
-    coverImage: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=600',
-    hasPackages: false,
-  },
-  {
-    name: 'Dubai',
-    tagline: 'City of Wonders',
-    color: 'from-yellow-900/80 to-amber-900/90',
-    coverImage: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600',
-    hasPackages: false,
-  },
-  {
-    name: 'Iceland',
-    tagline: 'Land of Fire & Ice',
-    color: 'from-cyan-900/80 to-blue-900/90',
-    coverImage: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600',
-    hasPackages: false,
-  },
-  {
-    name: 'New Zealand',
-    tagline: 'Adventure Capital',
-    color: 'from-green-900/80 to-emerald-900/90',
-    coverImage: 'https://images.unsplash.com/photo-1467377791767-c929b5dc9a23?w=600',
-    hasPackages: false,
-  },
-  {
-    name: 'Switzerland',
-    tagline: 'Alpine Playground',
-    color: 'from-slate-900/80 to-blue-900/90',
-    coverImage: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600',
-    hasPackages: false,
-  },
 ];
 
 interface CustomisePackageModalProps {
@@ -102,11 +32,20 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [stateOrder, setStateOrder] = useState<string[]>([]);
+
+  // ── International countries (fetched from backend) ─────────
+  const [internationalCountries, setInternationalCountries] = useState<string[]>([]);
 
   // ── Filters ────────────────────────────────────────────────
   const [pkgType, setPkgType] = useState<'Domestic' | 'International' | ''>('');
   const [selectedNights, setSelectedNights] = useState<number[]>([]);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+
+  // ── State & City Dropdowns ─────────────────────────────────
+  const [selectedState, setSelectedState] = useState<string>('');
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const availableCities = selectedState ? getCitiesForState(selectedState) : [];
 
   // ── Modal ──────────────────────────────────────────────────
   const [modalOpen, setModalOpen] = useState(false);
@@ -121,6 +60,18 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
   const stateScrollRef = useRef<HTMLDivElement>(null);
   const countryScrollRef = useRef<HTMLDivElement>(null);
 
+  // ── Fetch international countries from backend ─────────────
+  useEffect(() => {
+    fetch(`${API_URL}/tour-packages/meta/state-counts?type=International`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.states.length > 0) {
+          setInternationalCountries(data.states.map((s: { state: string }) => s.state));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // ── Fetch packages ─────────────────────────────────────────
   const fetchPackages = useCallback(async () => {
     setLoading(true);
@@ -129,6 +80,8 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
       if (pkgType) params.append('type', pkgType);
       if (selectedNights.length > 0) params.append('nights', selectedNights.join(','));
       if (selectedRegion) params.append('region', selectedRegion);
+      if (selectedState) params.append('state', selectedState);
+      if (selectedCity) params.append('city', selectedCity);
 
       const res = await fetch(`${API_URL}/tour-packages?${params}`);
       const data = await res.json();
@@ -140,16 +93,37 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
       console.error('Failed to fetch packages:', err);
     }
     setLoading(false);
-  }, [pkgType, selectedNights, selectedRegion]);
+  }, [pkgType, selectedNights, selectedRegion, selectedState, selectedCity]);
 
   useEffect(() => {
     fetchPackages();
   }, [fetchPackages]);
 
-  // Reset region when switching type
+  // Fetch state counts on mount to sort chips by most packages first
+  useEffect(() => {
+    fetch(`${API_URL}/tour-packages/meta/state-counts?type=Domestic`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success && data.states.length > 0) {
+          setStateOrder(data.states.map((s: { state: string }) => s.state));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // Reset region + state + city when switching type
   const handlePkgTypeChange = (type: 'Domestic' | 'International' | '') => {
     setPkgType(type);
     setSelectedRegion(null);
+    setSelectedState('');
+    setSelectedCity('');
+  };
+
+  // When state changes, reset city
+  const handleStateChange = (state: string) => {
+    setSelectedState(state);
+    setSelectedCity('');
+    setSelectedRegion(state || null);
   };
 
   const toggleNight = (n: number) => {
@@ -158,8 +132,7 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
     );
   };
 
-  const handleRegionSelect = (region: string, hasPackages = true) => {
-    if (!hasPackages) return;
+  const handleRegionSelect = (region: string) => {
     setSelectedRegion((prev) => (prev === region ? null : region));
   };
 
@@ -168,13 +141,19 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
     if (container) container.scrollBy({ left: direction === 'left' ? -320 : 320, behavior: 'smooth' });
   };
 
-  const scrollStates = (dir: 'left' | 'right') => {
-    stateScrollRef.current?.scrollBy({ left: dir === 'right' ? 240 : -240, behavior: 'smooth' });
-  };
-
   const scrollCountries = (dir: 'left' | 'right') => {
     countryScrollRef.current?.scrollBy({ left: dir === 'right' ? 240 : -240, behavior: 'smooth' });
   };
+
+  const clearAllFilters = () => {
+    setSelectedState('');
+    setSelectedCity('');
+    setSelectedRegion(null);
+    setSelectedNights([]);
+    setPkgType('');
+  };
+
+  const hasActiveFilters = selectedState || selectedCity || selectedRegion || selectedNights.length > 0 || pkgType;
 
   const openCustomise = (pkg: any = null) => {
     setSelectedPkg(pkg);
@@ -266,15 +245,23 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
           <div className="flex flex-col sm:flex-row sm:items-end gap-4 justify-between">
             <div>
               <h2 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">
-                High-Energy <br/><span className="text-primary italic">Destinations</span>
+                Breathtaking <br/><span className="text-primary italic">Destinations</span>
               </h2>
               <p className="text-white/50 mt-4 max-w-md font-medium text-sm">
                 {total} packages found. Filter to find your perfect trip.
               </p>
             </div>
 
-            {/* Scroll arrows — top right */}
-            <div className="flex gap-2 shrink-0">
+            {/* Scroll arrows + Clear all */}
+            <div className="flex items-center gap-2 shrink-0">
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="px-4 py-2 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/5 border border-white/20 text-white/50 hover:text-white hover:border-white/40 transition-all"
+                >
+                  ✕ Clear All
+                </button>
+              )}
               <button
                 onClick={() => scrollContainer('left')}
                 className="size-10 sm:size-12 rounded-full bg-white/5 hover:bg-primary border border-white/10 flex items-center justify-center transition-all duration-300 active:scale-95"
@@ -309,7 +296,7 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
             ))}
           </div>
 
-          {/* ── State chips — shown when All or Domestic ── */}
+          {/* ── State chips (horizontal scroll) — shown when All or Domestic ── */}
           {(pkgType === '' || pkgType === 'Domestic') && (
             <div>
               <p className="text-[11px] text-white/40 font-black uppercase tracking-wider mb-3">
@@ -317,7 +304,7 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
               </p>
               <div className="relative">
                 <button
-                  onClick={() => scrollStates('left')}
+                  onClick={() => stateScrollRef.current?.scrollBy({ left: -240, behavior: 'smooth' })}
                   className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 size-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 items-center justify-center transition-all"
                 >
                   <span className="material-symbols-outlined text-sm">chevron_left</span>
@@ -328,39 +315,37 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                   className="flex gap-3 overflow-x-auto pb-2 px-1 sm:px-6"
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                  {ALL_INDIAN_STATES.map((state) => {
-                    const hasPackages = STATES_WITH_PACKAGES.has(state);
-                    const isSelected = selectedRegion === state;
+                  {[...ALL_INDIAN_STATES].sort((a, b) => {
+                    const aIdx = stateOrder.indexOf(a);
+                    const bIdx = stateOrder.indexOf(b);
+                    if (aIdx === -1 && bIdx === -1) return a.localeCompare(b);
+                    if (aIdx === -1) return 1;
+                    if (bIdx === -1) return -1;
+                    return aIdx - bIdx;
+                  }).map((state) => {
+                    const isSelected = selectedState === state;
                     return (
                       <button
                         key={state}
-                        onClick={() => handleRegionSelect(state, hasPackages)}
-                        disabled={!hasPackages}
-                        className={`group flex-shrink-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 border transition-all duration-200 whitespace-nowrap
+                        onClick={() => handleStateChange(isSelected ? '' : state)}
+                        className={`flex-shrink-0 flex items-center gap-2 rounded-full px-4 py-2.5 border transition-all duration-200 whitespace-nowrap
                           ${isSelected
                             ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30 scale-105'
-                            : hasPackages
-                              ? 'bg-white/5 border-primary/30 text-white hover:bg-primary/15 hover:border-primary/60 cursor-pointer hover:scale-105'
-                              : 'bg-white/3 border-white/5 text-white/30 cursor-not-allowed'
+                            : 'bg-white/5 border-primary/30 text-white hover:bg-primary/15 hover:border-primary/60 cursor-pointer hover:scale-105'
                           }`}
                       >
                         <span className="text-sm font-bold">{state}</span>
-                        {hasPackages && !isSelected && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        )}
-                        {isSelected && (
-                          <span className="material-symbols-outlined text-sm">check</span>
-                        )}
-                        {!hasPackages && (
-                          <span className="text-[9px] text-white/20 font-black uppercase">Soon</span>
-                        )}
+                        {isSelected
+                          ? <span className="material-symbols-outlined text-sm">check</span>
+                          : <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                        }
                       </button>
                     );
                   })}
                 </div>
 
                 <button
-                  onClick={() => scrollStates('right')}
+                  onClick={() => stateScrollRef.current?.scrollBy({ left: 240, behavior: 'smooth' })}
                   className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 size-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 items-center justify-center transition-all"
                 >
                   <span className="material-symbols-outlined text-sm">chevron_right</span>
@@ -369,11 +354,38 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
               <p className="text-center text-[11px] text-white/20 font-medium mt-2 sm:hidden">
                 ← Swipe to see more states →
               </p>
+
+              {/* ── City chips — appear below when a state is selected ── */}
+              {selectedState && availableCities.length > 0 && (
+                <div className="mt-5">
+                  <p className="text-[11px] text-white/40 font-black uppercase tracking-wider mb-3">
+                    Cities in <span className="text-primary">{selectedState}</span>:
+                  </p>
+                  <div className="flex gap-2 flex-wrap">
+                    {availableCities.map((city) => {
+                      const isCitySelected = selectedCity === city;
+                      return (
+                        <button
+                          key={city}
+                          onClick={() => setSelectedCity(isCitySelected ? '' : city)}
+                          className={`flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-bold border transition-all duration-200 whitespace-nowrap
+                            ${isCitySelected
+                              ? 'bg-white text-black border-white scale-105 shadow-lg'
+                              : 'bg-white/5 border-white/15 text-white/70 hover:bg-white/10 hover:border-white/35 hover:text-white'
+                            }`}
+                        >
+                          {city}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
           {/* ── Country chips — shown when All or International ── */}
-          {(pkgType === '' || pkgType === 'International') && (
+          {(pkgType === '' || pkgType === 'International') && internationalCountries.length > 0 && (
             <div>
               <p className="text-[11px] text-white/40 font-black uppercase tracking-wider mb-3">
                 Filter by Country:
@@ -391,34 +403,23 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                   className="flex gap-3 overflow-x-auto pb-2 px-1 sm:px-6"
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                  {DEFAULT_INTERNATIONAL_COUNTRIES.map((country) => {
-                    const isSelected = selectedRegion === country.name;
+                  {internationalCountries.map((country) => {
+                    const isSelected = selectedRegion === country;
                     return (
                       <button
-                        key={country.name}
-                        onClick={() => handleRegionSelect(country.name, country.hasPackages)}
-                        disabled={!country.hasPackages}
+                        key={country}
+                        onClick={() => handleRegionSelect(country)}
                         className={`group flex-shrink-0 flex items-center gap-2.5 rounded-full px-4 py-2.5 border transition-all duration-200 whitespace-nowrap
                           ${isSelected
                             ? 'bg-primary border-primary text-white shadow-lg shadow-primary/30 scale-105'
-                            : country.hasPackages
-                              ? 'bg-white/5 border-primary/30 text-white hover:bg-primary/15 hover:border-primary/60 cursor-pointer hover:scale-105'
-                              : 'bg-white/3 border-white/5 text-white/30 cursor-not-allowed'
+                            : 'bg-white/5 border-primary/30 text-white hover:bg-primary/15 hover:border-primary/60 cursor-pointer hover:scale-105'
                           }`}
                       >
-                        <span className="text-sm font-bold">{country.name}</span>
-                        <span className={`text-[10px] font-medium hidden sm:inline ${isSelected ? 'text-white/70' : 'text-white/30'}`}>
-                          · {country.tagline}
-                        </span>
-                        {country.hasPackages && !isSelected && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                        )}
-                        {isSelected && (
-                          <span className="material-symbols-outlined text-sm">check</span>
-                        )}
-                        {!country.hasPackages && (
-                          <span className="text-[9px] text-white/20 font-black uppercase">Soon</span>
-                        )}
+                        <span className="text-sm font-bold">{country}</span>
+                        {isSelected
+                          ? <span className="material-symbols-outlined text-sm">check</span>
+                          : <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                        }
                       </button>
                     );
                   })}
@@ -437,22 +438,52 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
             </div>
           )}
 
-          {/* ── Active region badge ── */}
-          {selectedRegion && (
-            <div className="flex items-center gap-3">
+          {/* ── Active filter badges ── */}
+          {(selectedState || selectedCity || selectedRegion) && (
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-[11px] text-white/40 font-black uppercase tracking-wider">Showing:</span>
-              <span className="flex items-center gap-2 bg-primary/15 border border-primary/40 text-primary px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider">
-                {selectedRegion}
-                <button
-                  onClick={() => setSelectedRegion(null)}
-                  className="hover:text-white transition-colors"
-                  aria-label="Clear region filter"
-                >
-                  <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </span>
+              {selectedState && (
+                <span className="flex items-center gap-2 bg-primary/15 border border-primary/40 text-primary px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider">
+                  {selectedState}
+                  <button
+                    onClick={() => handleStateChange('')}
+                    className="hover:text-white transition-colors"
+                    aria-label="Clear state filter"
+                  >
+                    <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              {selectedCity && (
+                <span className="flex items-center gap-2 bg-white/10 border border-white/20 text-white/70 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider">
+                  {selectedCity}
+                  <button
+                    onClick={() => setSelectedCity('')}
+                    className="hover:text-white transition-colors"
+                    aria-label="Clear city filter"
+                  >
+                    <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              {selectedRegion && !selectedState && (
+                <span className="flex items-center gap-2 bg-primary/15 border border-primary/40 text-primary px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider">
+                  {selectedRegion}
+                  <button
+                    onClick={() => setSelectedRegion(null)}
+                    className="hover:text-white transition-colors"
+                    aria-label="Clear region filter"
+                  >
+                    <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
             </div>
           )}
 
@@ -502,6 +533,25 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
               #adventure-scroll::-webkit-scrollbar { display: none; }
               #adventure-scroll { -ms-overflow-style: none; scrollbar-width: none; }
             `}} />
+
+            {/* Left arrow */}
+            <button
+              onClick={() => scrollContainer('left')}
+              className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-20 size-12 rounded-full bg-black/60 backdrop-blur-md hover:bg-primary border border-white/20 hover:border-primary items-center justify-center transition-all duration-300 shadow-xl active:scale-95"
+              aria-label="Scroll packages left"
+            >
+              <span className="material-symbols-outlined text-white text-xl">chevron_left</span>
+            </button>
+
+            {/* Right arrow */}
+            <button
+              onClick={() => scrollContainer('right')}
+              className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-20 size-12 rounded-full bg-black/60 backdrop-blur-md hover:bg-primary border border-white/20 hover:border-primary items-center justify-center transition-all duration-300 shadow-xl active:scale-95"
+              aria-label="Scroll packages right"
+            >
+              <span className="material-symbols-outlined text-white text-xl">chevron_right</span>
+            </button>
+
             <div
               id="adventure-scroll"
               className="flex gap-4 sm:gap-6 lg:gap-8 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory"
@@ -581,9 +631,15 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
                 </div>
               ))}
             </div>
-            <p className="text-center text-white/20 text-[10px] font-black uppercase tracking-widest mt-3 sm:hidden">
-              ← Swipe to explore →
-            </p>
+            {/* Package count indicator */}
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <span className="text-white/30 text-[11px] font-black uppercase tracking-widest">
+                {packages.length} package{packages.length !== 1 ? 's' : ''} available
+              </span>
+              <span className="text-white/20 text-[11px]">·</span>
+              <span className="text-white/20 text-[11px] sm:hidden font-medium">Swipe to explore</span>
+              <span className="text-white/20 text-[11px] hidden sm:inline font-medium">Use arrows to navigate</span>
+            </div>
           </div>
         )}
       </section>
@@ -609,18 +665,6 @@ const TourPackagesView: React.FC<TourPackagesViewProps> = ({ onNavigate }) => {
           </div>
         </div>
       </section>
-
-      {/* ── Ticker ────────────────────────────────────────────── */}
-      <div className="w-full bg-primary/10 border-t border-white/5 py-8 overflow-hidden">
-        <div className="flex whitespace-nowrap gap-16 animate-infinite-scroll text-[10px] font-black tracking-[0.3em] uppercase opacity-70">
-          {['Just quoted: 2 explorers for Himachal', 'New: Iceland Paragliding', 'Just quoted: Group of 4 for Dubai', '1,200 adventurers live now', 'New: Bali Honeymoon Special'].map((item, i) => (
-            <div key={i} className="flex items-center gap-3 shrink-0">
-              <span className="material-symbols-outlined text-primary text-sm">flash_on</span>
-              {item}
-            </div>
-          ))}
-        </div>
-      </div>
 
       <Footer onNavigate={handleNavigate} />
 

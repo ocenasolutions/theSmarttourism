@@ -482,7 +482,7 @@ const AdventureView: React.FC = () => {
               We'll plan a fully custom adventure itinerary — just tell us where you want to go.
             </p>
             <a
-              href="https://wa.me/919876543211"
+              href="https://wa.me/918679090502"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:scale-105 transition-all shadow-2xl"
@@ -529,11 +529,11 @@ const AdventureView: React.FC = () => {
                 </div>
               )}
               <div className="flex items-center justify-between border-t border-white/8 pt-5 gap-4">
-                <div>
+                {/* <div>
                   <div className="text-[10px] text-white/30 font-black uppercase">Starting from</div>
                   <div className="text-2xl sm:text-3xl font-black text-white">₹{detailPkg.basePrice.toLocaleString('en-IN')}</div>
                   <div className="text-[9px] text-white/30">per person · Max {detailPkg.maxGroupSize} · Age {detailPkg.minAge}+</div>
-                </div>
+                </div> */}
                 <button onClick={() => { setDetailPkg(null); openEnquiry(detailPkg); }} className="bg-primary hover:bg-red-600 text-white px-6 sm:px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all flex items-center gap-2 shrink-0">
                   Book Now<span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </button>
@@ -631,11 +631,11 @@ const PackageGrid: React.FC<PackageGridProps> = ({ packages, onBook, onDetail })
             {pkg.reviewCount > 0 && <span className="text-[10px] text-white/30 font-bold ml-auto">{pkg.reviewCount} reviews</span>}
           </div>
           <div className="flex items-center justify-between border-t border-white/8 pt-4">
-            <div>
+            {/* <div>
               <div className="text-[9px] text-white/30 font-black uppercase">From</div>
               <div className="text-lg sm:text-xl font-black text-white">₹{pkg.basePrice.toLocaleString('en-IN')}</div>
               <div className="text-[9px] text-white/30">per person</div>
-            </div>
+            </div> */}
             <div className="flex gap-2">
               <button onClick={() => onDetail(pkg)} className="px-3 sm:px-4 py-3 bg-white/8 hover:bg-white/15 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all border border-white/10" title="View details">
                 <span className="material-symbols-outlined text-sm">info</span>

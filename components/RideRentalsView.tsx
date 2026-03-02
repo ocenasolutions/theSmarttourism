@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import RIDES, { getCars, getBikes, getScooters, getCaravan } from '../data/RIdeData';
+import RIDES, { getCars, getBikes, getScooters, getCaravan } from '../data/RideData';
 
 type CategoryType = 'all' | 'cars' | 'bikes' | 'scooters' | 'caravan';
 

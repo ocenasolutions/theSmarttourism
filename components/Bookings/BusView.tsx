@@ -32,6 +32,102 @@ const BusView: React.FC = () => {
           </div>
         </div>
 
+        {/* Popular Routes Section */}
+        <section className="w-full max-w-6xl px-4 pt-32 pb-10">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-black tracking-tighter text-charcoal mb-3">Popular Overnight Routes</h2>
+            <p className="text-gray-500 font-medium text-base max-w-xl mx-auto">
+              Handpicked night journeys with the best comfort-to-price ratio across top destinations.
+            </p>
+          </div>
+
+          {/* Route Card — Delhi ↔ Nainital */}
+          <div className="bg-white rounded-[2rem] shadow-xl overflow-hidden">
+
+            {/* Card Header */}
+            <div className="bg-primary/5 border-b border-primary/10 px-10 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="bg-primary/10 size-12 rounded-full flex items-center justify-center">
+                  <span className="material-symbols-outlined text-primary text-2xl">directions_bus</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black tracking-tight text-charcoal">Delhi ↔ Nainital</h3>
+                  <p className="text-gray-500 text-sm font-medium">Departure at Night · Overnight Journey</p>
+                </div>
+              </div>
+              <span className="bg-primary/10 text-primary text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full">
+                Nightly Departure
+              </span>
+            </div>
+
+            {/* Bus Types */}
+            <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+              <div className="px-10 py-8 flex items-center justify-between gap-6 group hover:bg-gray-50 transition-colors">
+                <div className="flex items-center gap-5">
+                  <div className="bg-primary/5 size-14 rounded-2xl flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                    <span className="material-symbols-outlined text-primary text-2xl">weekend</span>
+                  </div>
+                  <div>
+                    <h4 className="text-base font-black uppercase tracking-widest text-charcoal">2×2 AC Bus</h4>
+                    <p className="text-gray-400 text-sm font-medium mt-0.5">Recliner seats · Air conditioned</p>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-2xl font-black text-charcoal">₹650</p>
+                  <p className="text-gray-400 text-xs font-medium">per person</p>
+                </div>
+              </div>
+
+              <div className="px-10 py-8 flex items-center justify-between gap-6 group hover:bg-gray-50 transition-colors">
+                <div className="flex items-center gap-5">
+                  <div className="bg-primary/5 size-14 rounded-2xl flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                    <span className="material-symbols-outlined text-primary text-2xl">airline_seat_flat</span>
+                  </div>
+                  <div>
+                    <h4 className="text-base font-black uppercase tracking-widest text-charcoal">Sleeper Bus</h4>
+                    <p className="text-gray-400 text-sm font-medium mt-0.5">Full-flat berths · Premium comfort</p>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-2xl font-black text-charcoal">₹800</p>
+                  <p className="text-gray-400 text-xs font-medium">per person</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Cancellation Policy */}
+            <div className="border-t border-gray-100 px-10 py-8">
+              <div className="flex items-center gap-2 mb-6">
+                <span className="material-symbols-outlined text-primary text-xl">policy</span>
+                <h4 className="text-sm font-black uppercase tracking-widest text-charcoal">Cancellation Policy</h4>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { time: 'Within 12 Hours', charge: '100%', icon: 'cancel', color: 'text-red-400' },
+                  { time: 'Within 1 Day',    charge: '60%',  icon: 'hourglass_top', color: 'text-amber-400' },
+                  { time: 'Within 45 Days',  charge: '30%',  icon: 'event_available', color: 'text-green-500' },
+                ].map((policy) => (
+                  <div key={policy.time} className="bg-gray-50 rounded-2xl px-6 py-5 flex flex-col gap-2">
+                    <span className={`material-symbols-outlined text-xl ${policy.color}`}>{policy.icon}</span>
+                    <p className="text-xs font-medium text-gray-400 leading-snug">{policy.time}</p>
+                    <p className="text-xl font-black text-charcoal">
+                      {policy.charge} <span className="text-xs font-medium text-gray-400">charge</span>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Book CTA */}
+            <div className="border-t border-gray-100 px-10 py-6 flex justify-end">
+              <button className="bg-primary text-white font-black px-10 py-4 rounded-full uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-lg flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">confirmation_number</span>
+                Book This Route
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* Features Section */}
         <section className="w-full max-w-6xl px-4 py-32 grid grid-cols-1 md:grid-cols-3 gap-16">
           <div className="flex flex-col items-center text-center space-y-6 group">

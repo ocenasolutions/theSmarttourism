@@ -17,7 +17,7 @@ const HotelsView: React.FC<HotelsViewProps> = ({ onNavigate }) => {
   };
 
   const handleTalkToExpert = () => {
-    window.open('https://wa.me/91987654321', '_blank');
+    window.open('https://wa.me/918679090502', '_blank');
   };
 
   return (

@@ -1,13 +1,32 @@
 import React from 'react';
 
+type ViewType =
+  | 'home'
+  | 'hotels'
+  | 'flights'
+  | 'bus'
+  | 'train'
+  | 'tour-packages'
+  | 'ride-rentals'
+  | 'adventure'
+  | 'support'
+  | 'terms'
+  | 'privacy';
+
 interface FooterProps {
-  onNavigate: (view: 'home' | 'hotels' | 'flights' | 'bus' | 'train' | 'tour-packages' | 'ride-rentals' | 'support') => void;
+  onNavigate: (view: ViewType) => void;
 }
 
 const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const handleNavigation = (view: 'home' | 'hotels' | 'flights' | 'bus' | 'train' | 'tour-packages' | 'ride-rentals' | 'support') => {
+  const handleNavigation = (view: ViewType) => {
     onNavigate(view);
   };
+
+  const whatsappNumbers = [
+    { label: 'Booking Line 1', number: '8679090502', display: '+91 86790 90502' },
+    { label: 'Booking Line 2', number: '919560257714', display: '+91 95602 57714' },
+    { label: 'Booking Line 3', number: '7456046441', display: '+91 74560 46441' },
+  ];
 
   return (
     <footer className="bg-charcoal text-white py-32 px-6 border-t border-white/5">
@@ -15,17 +34,45 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-20 mb-24">
           <div className="md:col-span-5">
             <div className="flex items-center gap-3 mb-10">
-<img
-  src="/logo.png"
-  alt="Smart Tourism Logo"
-  className="w-24 h-24 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
-/>              <h2 className="text-2xl font-black tracking-tighter uppercase italic">Smart Tourism</h2>
+              <img
+                src="/logo.png"
+                alt="Smart Tourism Logo"
+                className="w-24 h-24 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+              />
+              <h2 className="text-2xl font-black tracking-tighter uppercase italic">Smart Tourism</h2>
             </div>
             <p className="text-gray-400 text-sm font-medium max-w-sm mb-10 leading-relaxed">
-              Voted as the best travel agency for India and international holiday packages. 
-              We curate high-fidelity domestic tours, luxury escapes, and adventure treks 
+              Voted as the best travel agency for India and international holiday packages.
+              We curate high-fidelity domestic tours, luxury escapes, and adventure treks
               backed by 24/7 expert human support.
             </p>
+
+            {/* WhatsApp Booking Numbers - Horizontal */}
+            <div className="mb-10">
+              <div className="flex items-center gap-2 mb-4">
+                <svg className="w-3.5 h-3.5 fill-[#25D366]" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/30">WhatsApp Booking</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {whatsappNumbers.map((item) => (
+                  <a
+                    key={item.number}
+                    href={`https://wa.me/${item.number}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-2 bg-white/5 border border-white/10 hover:border-[#25D366]/50 hover:bg-[#25D366]/10 rounded-full px-3 py-1.5 transition-all duration-200"
+                  >
+                    <svg className="w-3 h-3 fill-[#25D366] flex-shrink-0" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span className="text-[11px] font-bold text-white/60 group-hover:text-white transition-colors whitespace-nowrap">{item.display}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
             <div className="flex gap-4">
               <a href="#" className="size-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all group">
                 <svg className="w-4 h-4 opacity-40 group-hover:opacity-100 fill-current" viewBox="0 0 24 24">
@@ -49,118 +96,34 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </a>
             </div>
           </div>
-          
+
           <div className="md:col-span-2">
             <h5 className="text-[10px] font-black uppercase tracking-[0.2em] mb-10 text-white/40">Best Hotels</h5>
             <ul className="space-y-4 text-xs font-bold text-white/60">
-              <li>
-                <button 
-                  onClick={() => handleNavigation('hotels')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Taj Hotels
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('hotels')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  The Oberoi
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('hotels')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  ITC Hotels
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('hotels')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Leela Palace
-                </button>
-              </li>
+              <li><button onClick={() => handleNavigation('hotels')} className="hover:text-primary transition-colors text-left">Taj Hotels</button></li>
+              <li><button onClick={() => handleNavigation('hotels')} className="hover:text-primary transition-colors text-left">The Oberoi</button></li>
+              <li><button onClick={() => handleNavigation('hotels')} className="hover:text-primary transition-colors text-left">ITC Hotels</button></li>
+              <li><button onClick={() => handleNavigation('hotels')} className="hover:text-primary transition-colors text-left">Leela Palace</button></li>
             </ul>
           </div>
 
           <div className="md:col-span-2">
             <h5 className="text-[10px] font-black uppercase tracking-[0.2em] mb-10 text-white/40">Services</h5>
             <ul className="space-y-4 text-xs font-bold text-white/60">
-              <li>
-                <button 
-                  onClick={() => handleNavigation('ride-rentals')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Bike Rentals
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('ride-rentals')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Car Rentals
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('flights')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Flight Booking
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('bus')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Bus Booking
-                </button>
-              </li>
+              <li><button onClick={() => handleNavigation('ride-rentals')} className="hover:text-primary transition-colors text-left">Bike Rentals</button></li>
+              <li><button onClick={() => handleNavigation('ride-rentals')} className="hover:text-primary transition-colors text-left">Car Rentals</button></li>
+              <li><button onClick={() => handleNavigation('flights')} className="hover:text-primary transition-colors text-left">Flight Booking</button></li>
+              <li><button onClick={() => handleNavigation('bus')} className="hover:text-primary transition-colors text-left">Bus Booking</button></li>
             </ul>
           </div>
 
           <div className="md:col-span-3">
             <h5 className="text-[10px] font-black uppercase tracking-[0.2em] mb-10 text-white/40">Best Packages</h5>
             <ul className="space-y-4 text-xs font-bold text-white/60 mb-8">
-              <li>
-                <button 
-                  onClick={() => handleNavigation('tour-packages')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Bali Packages
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('tour-packages')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Kerala Packages
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('tour-packages')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Goa Packages
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleNavigation('tour-packages')} 
-                  className="hover:text-primary transition-colors text-left"
-                >
-                  Dubai Packages
-                </button>
-              </li>
+              <li><button onClick={() => handleNavigation('tour-packages')} className="hover:text-primary transition-colors text-left">Bali Packages</button></li>
+              <li><button onClick={() => handleNavigation('tour-packages')} className="hover:text-primary transition-colors text-left">Kerala Packages</button></li>
+              <li><button onClick={() => handleNavigation('tour-packages')} className="hover:text-primary transition-colors text-left">Goa Packages</button></li>
+              <li><button onClick={() => handleNavigation('tour-packages')} className="hover:text-primary transition-colors text-left">Dubai Packages</button></li>
             </ul>
           </div>
         </div>
@@ -170,27 +133,36 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             Get curated travel.
           </p>
           <div className="flex bg-white/5 border border-white/10 rounded-full p-1 focus-within:border-primary transition-all max-w-md mx-auto">
-
-           <a
-  href="mailto:booking@thesmarttourism.com"
-  className="bg-transparent border-none focus:ring-0 text-xs px-5 flex-grow text-white text-white/40 cursor-pointer flex items-center"
->
-  booking@thesmarttourism.com
-</a>
-
+            <a
+              href="mailto:booking@thesmarttourism.com"
+              className="bg-transparent border-none focus:ring-0 text-xs px-5 flex-grow text-white text-white/40 cursor-pointer flex items-center"
+            >
+              booking@thesmarttourism.com
+            </a>
             <button className="bg-primary text-white size-10 rounded-full flex items-center justify-center hover:scale-105 transition-transform shadow-lg shadow-primary/20">
               <span className="material-symbols-outlined text-lg">arrow_forward</span>
             </button>
           </div>
         </div>
 
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black uppercase tracking-widest text-white/30">
-          <p>© 2024 Smart Tourism India. The best travel agency for India & international trips.</p>
-          <div className="flex gap-10">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-          </div>
-        </div>
+<div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black uppercase tracking-widest text-white/30">
+  <p>© 2024 Smart Tourism India. The best travel agency for India & international trips.</p>
+  <div className="flex gap-10">
+    <button
+      onClick={() => handleNavigation('privacy')}
+      className="hover:text-white transition-colors"
+    >
+      Privacy Policy
+    </button>
+
+    <button
+      onClick={() => handleNavigation('terms')}
+      className="hover:text-white transition-colors"
+    >
+      Terms of Service
+    </button>
+  </div>
+</div>
       </div>
     </footer>
   );
