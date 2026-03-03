@@ -48,7 +48,7 @@ export const RIDES: RideData[] = [
     vibe: 'City Performance',
     price: '₹800/day',
     tag: 'Sporty & Affordable',
-    img: 'https://i.pinimg.com/736x/31/9d/af/319daf6ccaf01b44a6c8f75d196ce1cb.jpg',
+    img: 'https://5.imimg.com/data5/YL/JD/GLADMIN-4852289/bajaj-pulsar-180-1000x1000.png',
     category: 'bikes'
   },
   {
@@ -90,7 +90,7 @@ export const RIDES: RideData[] = [
     vibe: 'Breezy City Drive',
     price: '₹1,100 – ₹9,700/day',
     tag: 'Easy Commute',
-    img: 'https://i.pinimg.com/736x/c6/4a/cb/c64acb7bad68ab88532f888885a22287.jpg',
+    img: 'https://htcms-prod-images.s3.ap-south-1.amazonaws.com/htmobile1/hyundai_santro/images/exterior_hyundai-santro_front-side_630x420.jpg?imwidth=930',
     category: 'cars'
   },
   {
@@ -130,7 +130,7 @@ export const RIDES: RideData[] = [
     vibe: 'Group Travel',
     price: '₹1,600 – ₹12,000/day',
     tag: 'Crew Mover',
-    img: 'https://i.pinimg.com/736x/7c/25/9b/7c259b460dc6b5996b092814471d1454.jpg',
+    img: 'https://live.staticflickr.com/6003/5973846422_e26557d38c.jpg',
     category: 'cars'
   },
   {
