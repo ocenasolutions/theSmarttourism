@@ -183,6 +183,88 @@ export const RIDES: RideData[] = [
     img: 'https://i.pinimg.com/736x/39/32/d5/3932d5e1e3ad6b7c7e3996d22565904d.jpg',
     category: 'cars'
   },
+
+  // NEW CARS
+  {
+    id: '28',
+    title: 'Aura',
+    desc: 'Hyundai • Sedan',
+    vibe: 'Smooth City Ride',
+    price: '₹1,400 – ₹10,000/day',
+    tag: 'Comfort Sedan',
+    img: 'https://i.pinimg.com/736x/fc/b7/a3/fcb7a3413e25f6c157b7de204ffe3be0.jpg',
+    category: 'cars'
+  },
+  {
+    id: '29',
+    title: 'Amaze',
+    desc: 'Honda • Compact Sedan',
+    vibe: 'Premium Feel, City Price',
+    price: '₹1,400 – ₹10,000/day',
+    tag: 'Honda Quality',
+    img: 'https://i.pinimg.com/736x/b1/2c/3d/b12c3d4e5f6a7b8c9d0e1f2a3b4c5d6e.jpg',
+    category: 'cars'
+  },
+  {
+    id: '30',
+    title: 'Tigor',
+    desc: 'Tata Motors • Compact Sedan',
+    vibe: 'Urban Elegance',
+    price: '₹1,400 – ₹10,000/day',
+    tag: 'Stylish Pick',
+    img: 'https://i.pinimg.com/736x/9a/f0/65/9af0656711c57343f28c22f7241a1483.jpg',
+    category: 'cars'
+  },
+  {
+    id: '31',
+    title: 'Ertiga',
+    desc: 'Maruti Suzuki • MPV',
+    vibe: 'Family Comfort',
+    price: '₹1,800 – ₹13,000/day',
+    tag: 'Family MPV',
+    img: 'https://i.pinimg.com/1200x/c2/b2/96/c2b296d18c55a6880c4bcce8228df290.jpg',
+    category: 'cars'
+  },
+  {
+    id: '32',
+    title: 'Innova Crysta',
+    desc: 'Toyota • Premium MPV',
+    vibe: 'Business Class on Wheels',
+    price: '₹2,500 – ₹18,000/day',
+    tag: 'Premium Choice',
+    img: 'https://i.pinimg.com/736x/b0/84/97/b084974389f0c4f253a3befa9a08c1eb.jpg',
+    category: 'cars'
+  },
+  {
+    id: '33',
+    title: 'Innova Hycross',
+    desc: 'Toyota • Hybrid MPV',
+    vibe: 'Eco-Luxury Touring',
+    price: '₹3,000 – ₹20,000/day',
+    tag: 'Hybrid Luxury',
+    img: 'https://i.pinimg.com/736x/3d/99/1a/3d991a1c18881725bd1053848b1b1a7e.jpg',
+    category: 'cars'
+  },
+  {
+    id: '34',
+    title: 'Carens',
+    desc: 'Kia • Premium MPV',
+    vibe: 'Modern Family Hauler',
+    price: '₹2,500 – ₹18,000/day',
+    tag: 'Kia Premium',
+    img: 'https://i.pinimg.com/1200x/7d/46/7c/7d467c96b9e3396b94d4b7498e864180.jpg',
+    category: 'cars'
+  },
+  {
+    id: '35',
+    title: 'Marazzo',
+    desc: 'Mahindra • Premium MPV',
+    vibe: 'Bold & Spacious Touring',
+    price: '₹2,500 – ₹18,000/day',
+    tag: 'Mahindra MPV',
+    img: 'https://i.pinimg.com/1200x/24/7e/e1/247ee1c2e705e62dc385df85d808798b.jpg',
+    category: 'cars'
+  },
 ];
 
 // Helper functions to filter by category
