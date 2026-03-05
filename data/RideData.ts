@@ -202,7 +202,7 @@ export const RIDES: RideData[] = [
     vibe: 'Premium Feel, City Price',
     price: '₹1,400 – ₹10,000/day',
     tag: 'Honda Quality',
-    img: 'https://i.pinimg.com/736x/b1/2c/3d/b12c3d4e5f6a7b8c9d0e1f2a3b4c5d6e.jpg',
+    img: 'https://stimg.cardekho.com/images/carexteriorimages/930x620/Honda/Amaze/12185/1751089165116/side-view-(left)-90.jpg',
     category: 'cars'
   },
   {

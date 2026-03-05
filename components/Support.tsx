@@ -162,9 +162,9 @@ const Support: React.FC = () => {
             <h3 className="text-2xl font-bold">Visit Us</h3>
           </div>
           <div className="space-y-2 text-white/90">
-            <p className="text-lg font-semibold">SmartTourism</p>
-            <p className="text-base">Shop No.151 Opposite Bus Stand Haldwani Road Tallital</p>
-            <p className="text-base">Nainital- Uttarakhand</p>
+            <p className="text-lg font-semibold">Smart Tourism</p>
+            <p className="text-base">Ground Floor, Judge Court, Sanjay Colony, Bareilly Nanital Road, Ideal Enterprises</p>
+            <p className="text-base">Thapa Colony,Haldwani, Nainital- Uttarakhand, 263139</p>
             <div className="mt-6">
             </div>
           </div>
