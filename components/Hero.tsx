@@ -62,8 +62,8 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all ${
                 activeTab === tab.id
-                  ? 'bg-primary text-white shadow-lg shadow-primary/40'
-                  : 'bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-md'
+                  ? 'bg-white text-gray-900 shadow-lg'
+                  : 'bg-red-600 text-white hover:bg-red-700 shadow-md shadow-red-900/30'
               }`}
             >
               <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
@@ -73,18 +73,18 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         </div>
 
         {/* Row 2: Nav Tabs */}
-<div className="flex justify-center gap-2 sm:gap-3 mb-6 px-2">
-  {navTabs.map((tab) => (
-    <button
-      key={tab.view}
-      onClick={() => onNavigate?.(tab.view)}
-      className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-md whitespace-nowrap"
-    >
-      <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
-      <span>{tab.label}</span>
-    </button>
-  ))}
-</div>
+        <div className="flex justify-center gap-2 sm:gap-3 mb-6 px-2">
+          {navTabs.map((tab) => (
+            <button
+              key={tab.view}
+              onClick={() => onNavigate?.(tab.view)}
+              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm transition-all bg-red-600 text-white hover:bg-red-700 shadow-md shadow-red-900/30 whitespace-nowrap"
+            >
+              <span className="material-symbols-outlined text-base sm:text-lg">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
 
         {/* Search Box — only shown for search tabs */}
         <div className="w-full max-w-4xl mx-auto">

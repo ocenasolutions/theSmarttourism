@@ -35,7 +35,7 @@ const TermsView: React.FC = () => {
           <section>
             <h2 className="text-2xl font-bold mb-4 text-primary">2. Intellectual Property</h2>
             <p className="text-white/70 leading-relaxed">
-              The website and all its original content are the sole property of Travel Nainital
+              The website and all its original content are the sole property of Smart Tourism
               and are fully protected by international copyright and intellectual property laws.
             </p>
           </section>

@@ -6,7 +6,7 @@ const Testimonials: React.FC = () => {
     { name: 'Ananya', city: 'Bangalore', quote: 'Booked my Goa trip in 2 minutes. Super smooth experience!', img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop' },
     { name: 'Rahul', city: 'Delhi', quote: 'Loved the UI and instant support. Way better than other apps.', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop' },
     { name: 'Sneha', city: 'Mumbai', quote: 'The aesthetic hotels they recommended were literally Instagram gold.', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop' },
-    { name: 'Ishan', city: 'Pune', quote: 'Saved ₹2000 on my Manali stay compared to MMT. Smart Tourism is legit.', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop' },
+    { name: 'Ishan', city: 'Pune', quote: 'Saved ₹2000 on my Manali stay compared to Others. Smart Tourism is legit.', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop' },
   ];
 
   return (

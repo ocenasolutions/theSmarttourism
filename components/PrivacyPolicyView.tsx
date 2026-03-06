@@ -28,7 +28,7 @@ const PrivacyView: React.FC = () => {
               1. Introduction
             </h2>
             <p className="text-white/70 leading-relaxed">
-              This document explains how Travel Nainital collects, uses, processes,
+              This document explains how Smart Tourism collects, uses, processes,
               and protects your personal data across our website, mobile apps,
               partner platforms, and social media channels.
             </p>
@@ -87,7 +87,7 @@ const PrivacyView: React.FC = () => {
 
             <ul className="list-disc list-inside text-white/70 space-y-3 leading-relaxed">
               <li>Hotels, rentals, cars, tours you book</li>
-              <li>Local Travel Nainital offices</li>
+              <li>Local Smart Tourism offices</li>
               <li>Payment service providers</li>
               <li>Analytics and advertising partners</li>
               <li>Legal authorities when required</li>
