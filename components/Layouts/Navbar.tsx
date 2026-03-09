@@ -27,7 +27,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isDarkView ? '' : 'border-t-4 border-[#3a82f6]'} ${(scrolled || isRideView) ? 'glass-nav shadow-md h-16' : 'lg:bg-transparent bg-white/80 backdrop-blur-md h-16 lg:h-20'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isDarkView ? '' : 'border-t-4 border-[#3a82f6]'} ${(scrolled || isRideView) ? 'glass-nav shadow-md h-20' : 'lg:bg-transparent bg-white/80 backdrop-blur-md h-20 lg:h-24'}`}>
         <div className="max-w-[1400px] mx-auto px-6 h-full flex items-center justify-between lg:justify-between">
           {/* Logo Section - Centered on Mobile */}
           <div className="lg:hidden flex-1 flex justify-center">
@@ -38,7 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
               <img
                 src="/logo.png"
                 alt="Smart Tourism Logo"
-                className="w-24 h-24 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+                className="w-36 h-36 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
               />
               <h2 className={`text-xl font-black tracking-tighter transition-colors uppercase italic ${isDarkView ? 'text-white' : 'text-charcoal'}`}>
                 Smart<span className="text-primary">Tourism</span>
@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
             <img
               src="/logo.png"
               alt="Smart Tourism Logo"
-              className="w-24 h-24 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+              className="w-36 h-36 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
             />
             <h2 className={`text-xl font-black tracking-tighter transition-colors uppercase italic ${isDarkView ? 'text-white' : 'text-charcoal'}`}>
               Smart<span className="text-primary">Tourism</span>
