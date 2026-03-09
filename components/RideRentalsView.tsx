@@ -1,10 +1,67 @@
 import React, { useState } from 'react';
-import RIDES, { getCars, getBikes, getScooters, getCaravan } from '../data/RideData';
+import RIDES, { getCars, getBikes, getScooters, getCaravan, RideData } from '../data/RideData';
+import { API_URL } from '@/config/api';
 
 type CategoryType = 'all' | 'cars' | 'bikes' | 'scooters' | 'caravan';
 
 const RideRentalsView: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryType>('all');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRide, setSelectedRide] = useState<RideData | null>(null);
+  const [form, setForm] = useState({ name: '', mobile: '' });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleQuoteClick = (ride: RideData) => {
+    setSelectedRide(ride);
+    setForm({ name: '', mobile: '' });
+    setError('');
+    setSubmitted(false);
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+    setSelectedRide(null);
+    setSubmitted(false);
+    setError('');
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name.trim()) { setError('Please enter your name.'); return; }
+    if (!/^[6-9]\d{9}$/.test(form.mobile)) { setError('Please enter a valid 10-digit mobile number.'); return; }
+
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${API_URL}/bookings/ride-rental`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          mobile: form.mobile.trim(),
+          vehicleName: selectedRide?.title,
+          vehicleDesc: selectedRide?.desc,
+          vehiclePrice: selectedRide?.price,
+          vehicleTag: selectedRide?.tag,
+          vehicleVibe: selectedRide?.vibe,
+          vehicleCategory: selectedRide?.category,
+          bookedAt: new Date().toISOString(),
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        setError(data.message || 'Failed to submit. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Network error. Please try again.');
+    }
+    setLoading(false);
+  };
 
   // Get filtered rides based on active category
   const getFilteredRides = () => {
@@ -133,7 +190,10 @@ const RideRentalsView: React.FC = () => {
       </div>
 
       {/* mt-auto pushes button to bottom, aligning across all cards */}
-      <button className="mt-auto w-full mt-8 bg-white border-2 border-charcoal text-charcoal py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal hover:text-white transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl">
+      <button
+        onClick={() => handleQuoteClick(ride)}
+        className="mt-auto w-full mt-8 bg-white border-2 border-charcoal text-charcoal py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal hover:text-white transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl"
+      >
         Request Rental Quote
       </button>
     </div>
@@ -189,6 +249,114 @@ const RideRentalsView: React.FC = () => {
           </svg>
         </button>
       </div>
+
+      {/* ── Rental Quote Modal ──────────────────────────────────── */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={handleClose}>
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div className="relative w-full max-w-md bg-white rounded-[2rem] shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+
+            {/* Header */}
+            <div className="bg-charcoal px-8 pt-8 pb-6 relative">
+              <button onClick={handleClose} className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors">
+                <span className="material-symbols-outlined text-2xl">close</span>
+              </button>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="material-symbols-outlined text-primary text-3xl">directions_car</span>
+                <h2 className="text-white text-2xl font-black tracking-tight">Request Rental Quote</h2>
+              </div>
+              {selectedRide && (
+                <div className="flex items-center gap-3 bg-white/5 rounded-2xl px-4 py-3 mt-2">
+                  <div>
+                    <p className="text-white font-black text-base">{selectedRide.title}</p>
+                    <p className="text-white/50 text-xs mt-0.5">{selectedRide.desc} &nbsp;·&nbsp; <span className="text-primary font-bold">{selectedRide.price}</span></p>
+                    <p className="text-white/40 text-[10px] uppercase tracking-widest mt-1">Vibe: {selectedRide.vibe}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {submitted ? (
+              <div className="px-8 py-10 flex flex-col items-center text-center gap-4">
+                <div className="bg-green-100 size-16 rounded-full flex items-center justify-center">
+                  <span className="material-symbols-outlined text-green-500 text-3xl">check_circle</span>
+                </div>
+                <h3 className="text-xl font-black text-charcoal">Quote Request Sent!</h3>
+                <p className="text-gray-500 text-sm font-medium">
+                  Our ride expert will call you at <span className="text-primary font-bold">{form.mobile}</span> shortly.
+                </p>
+                <button onClick={handleClose} className="mt-4 bg-charcoal text-white font-black px-8 py-3 rounded-full uppercase tracking-widest text-xs hover:scale-105 transition-transform">
+                  Done
+                </button>
+              </div>
+            ) : (
+              <div className="px-8 py-8 flex flex-col gap-5">
+                {/* Name */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-charcoal">
+                    Full Name <span className="text-red-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">person</span>
+                    <input
+                      type="text"
+                      placeholder="Enter your full name"
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full border border-gray-200 rounded-xl pl-12 pr-4 py-3 text-sm text-charcoal placeholder-gray-300 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                  </div>
+                </div>
+
+                {/* Mobile */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-charcoal">
+                    Mobile Number <span className="text-red-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">phone</span>
+                    <input
+                      type="tel"
+                      placeholder="10-digit mobile number"
+                      value={form.mobile}
+                      maxLength={10}
+                      onChange={(e) => setForm({ ...form, mobile: e.target.value.replace(/\D/g, '') })}
+                      className="w-full border border-gray-200 rounded-xl pl-12 pr-4 py-3 text-sm text-charcoal placeholder-gray-300 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                  </div>
+                </div>
+
+                {error && (
+                  <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-xl px-4 py-3">
+                    <span className="material-symbols-outlined text-red-400 text-base">error</span>
+                    <p className="text-red-500 text-xs font-medium">{error}</p>
+                  </div>
+                )}
+
+                <button
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  className="mt-2 bg-charcoal text-white font-black px-8 py-4 rounded-full uppercase tracking-widest text-xs hover:scale-105 transition-transform shadow-lg flex items-center justify-center gap-2 disabled:opacity-60 disabled:scale-100"
+                >
+                  {loading ? (
+                    <>
+                      <span className="material-symbols-outlined text-base animate-spin">progress_activity</span>
+                      Sending…
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-base">send</span>
+                      Send Quote Request
+                    </>
+                  )}
+                </button>
+
+                <p className="text-center text-gray-400 text-xs">Our team will contact you within a few hours.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

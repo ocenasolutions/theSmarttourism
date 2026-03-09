@@ -58,19 +58,9 @@ const TrainView: React.FC = () => {
 
               {/* Search Form with Button on Same Row */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-end">
-                {/* SearchBox Component - Takes most of the width */}
                 <div className="flex-1">
                   <SearchBox type="train" />
                 </div>
-                
-                {/* Search Button - Aligned to the right */}
-                <button 
-                  type="button"
-                  className="bg-primary hover:bg-primary/90 text-white rounded-full w-full sm:w-14 sm:h-14 h-12 flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl flex-shrink-0"
-                  aria-label="Search"
-                >
-                  <span className="material-symbols-outlined text-2xl">search</span>
-                </button>
               </div>
 
               <p className="text-center text-[9px] sm:text-[10px] text-gray-400 font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] mt-5 lg:mt-6">
