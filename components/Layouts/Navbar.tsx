@@ -28,10 +28,11 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isDarkView ? '' : 'border-t-4 border-[#3a82f6]'} ${(scrolled || isRideView) ? 'glass-nav shadow-md h-20' : 'lg:bg-transparent bg-white/80 backdrop-blur-md h-20 lg:h-24'}`}>
-        <div className="max-w-[1400px] mx-auto px-6 h-full flex items-center justify-between lg:justify-between">
+        <div className="max-w-[1400px] mx-auto px-4 xl:px-6 h-full flex items-center gap-4 xl:gap-6">
+
           {/* Logo Section - Centered on Mobile */}
           <div className="lg:hidden flex-1 flex justify-center">
-            <div 
+            <div
               className="flex items-center gap-2 cursor-pointer"
               onClick={() => onNavigate('home')}
             >
@@ -46,9 +47,9 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
             </div>
           </div>
 
-          {/* Logo Section - Left on Desktop */}
-          <div 
-            className="hidden lg:flex items-center gap-2 shrink-0 cursor-pointer"
+          {/* Logo Section - Desktop */}
+          <div
+            className="hidden lg:flex items-center gap-1 cursor-pointer flex-shrink-0"
             onClick={() => onNavigate('home')}
           >
             <img
@@ -56,52 +57,54 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
               alt="Smart Tourism Logo"
               className="w-36 h-36 object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
             />
-            <h2 className={`text-xl font-black tracking-tighter transition-colors uppercase italic ${isDarkView ? 'text-white' : 'text-charcoal'}`}>
+            {/* Hide the text label on lg/md, show only on xl+ where there's room */}
+            <h3 className={`hidden xl:block text-l font-black tracking-tighter transition-colors uppercase italic whitespace-nowrap ${isDarkView ? 'text-white' : 'text-charcoal'}`}>
               Smart<span className="text-primary">Tourism</span>
-            </h2>
+            </h3>
           </div>
-          
-          {/* Centered Navigation - Desktop Only */}
-          <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
+
+          {/* Nav - Desktop */}
+          <nav className="hidden lg:flex flex-1 items-center justify-center gap-4 xl:gap-7">
             {MENU_ITEMS.map((item) => (
-              <button 
-                key={item.label} 
+              <button
+                key={item.label}
                 onClick={() => item.view && onNavigate(item.view)}
-                className={`flex items-center gap-2 text-[13px] font-bold transition-colors group relative
+                className={`flex items-center gap-1.5 text-[12px] xl:text-[13px] font-bold transition-colors group relative whitespace-nowrap
                   ${currentView === item.view ? 'text-primary' : (isDarkView ? 'text-white/80 hover:text-white' : 'text-[#444] hover:text-primary')}
                   ${item.view === 'adventure' ? 'font-black' : ''}
                 `}
               >
-                <span className="material-symbols-outlined text-xl group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-lg xl:text-xl group-hover:scale-110 transition-transform">
                   {item.icon}
                 </span>
-                <span className="whitespace-nowrap">{item.label}</span>
+                <span>{item.label}</span>
               </button>
             ))}
           </nav>
 
           {/* Right Actions - Desktop */}
-          <div className="hidden lg:flex items-center">
-            <button 
+          <div className="hidden lg:flex items-center flex-shrink-0">
+            <button
               onClick={() => onNavigate('support')}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-full transition-all group ${isDarkView ? 'bg-white/10 hover:bg-white/20' : 'bg-[#f1f3f4] hover:bg-[#e8eaed]'}`}
+              className={`flex items-center gap-2 px-4 xl:px-6 py-2.5 rounded-full transition-all group ${isDarkView ? 'bg-white/10 hover:bg-white/20' : 'bg-[#f1f3f4] hover:bg-[#e8eaed]'}`}
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className={`group-hover:scale-110 transition-transform ${isDarkView ? 'stroke-white' : 'stroke-primary'}`}
               >
                 <path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/>
                 <path d="M21 16v2a4 4 0 0 1-4 4h-5"/>
               </svg>
-              <span className={`font-bold text-sm ${isDarkView ? 'text-white' : 'text-primary'}`}>Instant Support</span>
+              {/* Hide "Instant Support" text on lg, show on xl */}
+              <span className={`hidden xl:inline font-bold text-sm whitespace-nowrap ${isDarkView ? 'text-white' : 'text-primary'}`}>Instant Support</span>
             </button>
           </div>
 
@@ -123,8 +126,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
         <div className="lg:hidden fixed inset-0 z-40 bg-white/95 backdrop-blur-lg pt-20">
           <nav className="flex flex-col items-center gap-6 p-6">
             {MENU_ITEMS.map((item) => (
-              <button 
-                key={item.label} 
+              <button
+                key={item.label}
                 onClick={() => {
                   item.view && onNavigate(item.view);
                   setMobileMenuOpen(false);
@@ -143,24 +146,24 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, onNavigate, currentView }) =>
                 )}
               </button>
             ))}
-            
-            <button 
+
+            <button
               onClick={() => {
                 onNavigate('support');
                 setMobileMenuOpen(false);
               }}
               className="flex items-center gap-3 mt-4 px-8 py-3 bg-primary/10 hover:bg-primary/20 rounded-full transition-all"
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="stroke-primary"
               >
                 <path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5Zm0 0a9 9 0 1 1 18 0m0 0v5a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/>

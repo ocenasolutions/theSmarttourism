@@ -158,47 +158,137 @@ const RideRentalsView: React.FC = () => {
           </button>
         </div>
 
-        {/* Ride Grid */}
-{/* Ride Grid */}
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-4 md:px-10">
-  {filteredRides.map((ride) => (
-    <div key={ride.id} className="group cursor-pointer flex flex-col"> {/* ADD flex flex-col */}
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] mb-6 shadow-xl bg-gray-200">
-        <div 
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
-          style={{ backgroundImage: `url("${ride.img}")` }}
-        ></div>
-        <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-charcoal shadow-sm">
-          {ride.tag}
-        </div>
-        <button className="absolute top-6 right-6 size-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-gray-400 hover:text-primary transition-colors shadow-md">
-          <span className="material-symbols-outlined text-xl">favorite</span>
-        </button>
-      </div>
+        {/* ── Bike Cards: always full-width stacked ── */}
+        {filteredRides.some(r => r.category === 'bikes') && (
+          <div className="px-4 md:px-10 flex flex-col gap-5 mb-12">
+            {activeCategory === 'all' && (
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-1">🏍️ Bikes &amp; Cycles</p>
+            )}
+            {filteredRides.filter(r => r.category === 'bikes').map((ride) => (
+              <div key={ride.id} className="group bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col md:flex-row">
 
-      {/* ADD flex-1 so this section stretches to fill available space */}
-      <div className="flex justify-between items-start px-2 flex-1">
-        <div>
-          <h3 className="text-2xl font-black text-charcoal tracking-tight mb-1">{ride.title}</h3>
-          <p className="text-gray-400 font-bold text-xs uppercase tracking-widest mb-2">{ride.desc}</p>
-          <p className="text-primary font-black text-[10px] uppercase tracking-widest">Vibe: {ride.vibe}</p>
-        </div>
-        <div className="text-right">
-          <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Estimated</p>
-          <p className="text-xl font-black text-charcoal tracking-tight">{ride.price}</p>
-        </div>
-      </div>
+                {/* Image Panel */}
+                <div className="relative md:w-72 lg:w-80 flex-shrink-0 overflow-hidden" style={{ minHeight: '220px' }}>
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                    style={{ backgroundImage: `url("${ride.img}")` }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
+                  <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-charcoal shadow">
+                    {ride.tag}
+                  </div>
+                  <div className="absolute bottom-4 left-4 md:hidden bg-charcoal/90 backdrop-blur-md px-4 py-2 rounded-2xl">
+                    <p className="text-[9px] text-white/60 uppercase tracking-widest font-bold">Price</p>
+                    <p className="text-white font-black text-lg leading-none">{ride.price}</p>
+                  </div>
+                </div>
 
-      {/* mt-auto pushes button to bottom, aligning across all cards */}
-      <button
-        onClick={() => handleQuoteClick(ride)}
-        className="mt-auto w-full mt-8 bg-white border-2 border-charcoal text-charcoal py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal hover:text-white transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl"
-      >
-        Request Rental Quote
-      </button>
-    </div>
-  ))}
-</div>
+                {/* Info Panel */}
+                <div className="flex flex-col flex-1 p-6 md:p-8 gap-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-black text-charcoal tracking-tight leading-tight">{ride.title}</h3>
+                      <p className="text-gray-400 font-bold text-[11px] uppercase tracking-widest mt-1">{ride.vibe}</p>
+                    </div>
+                    <div className="hidden md:flex flex-col items-end flex-shrink-0 bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3">
+                      <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Price</p>
+                      <p className="text-2xl font-black text-charcoal tracking-tight leading-none">{ride.price}</p>
+                    </div>
+                  </div>
+
+                  {ride.specs && ride.specs.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {ride.specs.map((spec, i) => (
+                        <span key={i} className="inline-flex items-center gap-1.5 bg-gray-50 border border-gray-200 text-charcoal text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                          {spec}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="border-t border-gray-100" />
+
+                  <div className="flex flex-wrap items-center gap-6">
+                    {ride.timing && (
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <span className="material-symbols-outlined text-primary text-base">schedule</span>
+                        </div>
+                        <div>
+                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Timing</p>
+                          <p className="text-xs font-bold text-charcoal">{ride.timing}</p>
+                        </div>
+                      </div>
+                    )}
+                    {ride.accessories && (
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <span className="material-symbols-outlined text-primary text-base">security</span>
+                        </div>
+                        <div>
+                          <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Accessories</p>
+                          <p className="text-xs font-bold text-charcoal">{ride.accessories}</p>
+                        </div>
+                      </div>
+                    )}
+                    <button
+                      onClick={() => handleQuoteClick(ride)}
+                      className="ml-auto bg-charcoal text-white py-3.5 px-8 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-primary transition-all duration-300 transform hover:scale-[1.03] active:scale-95 shadow-lg flex items-center gap-2 whitespace-nowrap"
+                    >
+                      <span className="material-symbols-outlined text-base">two_wheeler</span>
+                      Book Now
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* ── Non-Bike Cards: 3-column grid ── */}
+        {filteredRides.some(r => r.category !== 'bikes') && (
+          <div className="px-4 md:px-10">
+            {activeCategory === 'all' && (
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-6">🚗 Cars &amp; More</p>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {filteredRides.filter(r => r.category !== 'bikes').map((ride) => (
+                <div key={ride.id} className="group cursor-pointer flex flex-col">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] mb-6 shadow-xl bg-gray-200">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
+                      style={{ backgroundImage: `url("${ride.img}")` }}
+                    />
+                    <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.2em] text-charcoal shadow-sm">
+                      {ride.tag}
+                    </div>
+                    <button className="absolute top-6 right-6 size-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-gray-400 hover:text-primary transition-colors shadow-md">
+                      <span className="material-symbols-outlined text-xl">favorite</span>
+                    </button>
+                  </div>
+                  <div className="flex justify-between items-start px-2 flex-1">
+                    <div>
+                      <h3 className="text-2xl font-black text-charcoal tracking-tight mb-1">{ride.title}</h3>
+                      <p className="text-gray-400 font-bold text-xs uppercase tracking-widest mb-2">{ride.desc}</p>
+                      <p className="text-primary font-black text-[10px] uppercase tracking-widest">Vibe: {ride.vibe}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Estimated</p>
+                      <p className="text-xl font-black text-charcoal tracking-tight">{ride.price}</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => handleQuoteClick(ride)}
+                    className="mt-auto w-full mt-8 bg-white border-2 border-charcoal text-charcoal py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-charcoal hover:text-white transition-all transform hover:scale-[1.02] active:scale-95 shadow-xl"
+                  >
+                    Request Rental Quote
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Empty State */}
         {filteredRides.length === 0 && (

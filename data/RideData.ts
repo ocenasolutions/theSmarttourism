@@ -7,59 +7,90 @@ export interface RideData {
   tag: string;
   img: string;
   category: 'cars' | 'bikes' | 'scooters' | 'caravan';
+  specs?: string[];
+  timing?: string;
+  accessories?: string;
 }
 
 export const RIDES: RideData[] = [
   // BIKES
   {
     id: '11',
-    title: 'Classic 350',
+    title: 'Royal Enfield Classic 350 CC',
     desc: 'Royal Enfield • Retro Cruiser',
     vibe: 'Heritage Roads',
     price: '₹1,200/day',
     tag: 'Timeless Classic',
     img: 'https://i.pinimg.com/736x/c3/56/60/c356609bfcfcba9b0ce7493968d982ea.jpg',
-    category: 'bikes'
+    category: 'bikes',
+    specs: ['Disk Brakes', 'Electric Start', 'Generates 20Ps', '5 Speed Gearbox'],
+    timing: '08:00 AM – 08:00 PM',
+    accessories: 'Including One Helmet',
   },
   {
     id: '12',
-    title: 'Thunderbird 350',
+    title: 'Royal Enfield Thunderbird 350 CC',
     desc: 'Royal Enfield • Touring Cruiser',
     vibe: 'Long Haul Touring',
     price: '₹1,200/day',
     tag: 'Touring Beast',
     img: 'https://i.pinimg.com/1200x/ac/c9/91/acc99188f615015e24fe26805400d119.jpg',
-    category: 'bikes'
+    category: 'bikes',
+    specs: ['Disk Brakes', 'Electric Start', 'Generates 20Ps', '5 Speed Gearbox'],
+    timing: '08:00 AM – 08:00 PM',
+    accessories: 'Including One Helmet',
   },
   {
     id: '13',
-    title: 'Avenger 220',
+    title: 'Bajaj Avenger 220 CC',
     desc: 'Bajaj • Cruiser',
     vibe: 'Laid-Back Cruising',
     price: '₹1,000/day',
     tag: 'Budget Cruiser',
     img: 'https://i.pinimg.com/736x/52/dd/90/52dd9081238654168cbf51804e9d4503.jpg',
-    category: 'bikes'
+    category: 'bikes',
+    specs: ['Disk Brakes', 'Electric Start', 'Generates 20Ps', '5 Speed Gearbox'],
+    timing: '08:00 AM – 08:00 PM',
+    accessories: 'Including One Helmet',
   },
   {
     id: '14',
-    title: 'Pulsar 180',
+    title: 'Bajaj Pulsar 180 CC',
     desc: 'Bajaj • Sports Commuter',
     vibe: 'City Performance',
     price: '₹800/day',
     tag: 'Sporty & Affordable',
     img: 'https://5.imimg.com/data5/YL/JD/GLADMIN-4852289/bajaj-pulsar-180-1000x1000.png',
-    category: 'bikes'
+    category: 'bikes',
+    specs: ['Disk Brakes', 'Electric Start', 'Generates 20Ps', '5 Speed Gearbox'],
+    timing: '08:00 AM – 08:00 PM',
+    accessories: 'Including One Helmet',
   },
   {
     id: '15',
-    title: 'Mountain Bike',
+    title: 'Mountain Bike Single Seater',
     desc: 'Single Seater • 29 Gear',
     vibe: 'Trail Adventure',
     price: '₹200/hour',
     tag: 'Off-Road Fun',
     img: 'https://i.pinimg.com/736x/04/f4/a7/04f4a7a831f5b1fffe6e3b327914b7d1.jpg',
-    category: 'bikes'
+    category: 'bikes',
+    specs: ['29 Gear Mountain Bike', 'Single Seater'],
+    timing: '08:00 AM – 08:00 PM',
+    accessories: 'Including One Helmet',
+  },
+  {
+    id: '15b',
+    title: 'Mountain Bike Double Seater',
+    desc: 'Double Seater • 21 Gear',
+    vibe: 'Trail Adventure',
+    price: '₹300/hour',
+    tag: 'Tandem Fun',
+    img: 'https://i.pinimg.com/1200x/b3/ab/a3/b3aba3a0b768b9d2d5d377dd214e8abc.jpg',
+    category: 'bikes',
+    specs: ['21 Gear Mountain Bike', 'Double Seater'],
+    timing: '08:00 AM – 08:00 PM',
+    accessories: 'Including One Helmet',
   },
 
   // CARS
