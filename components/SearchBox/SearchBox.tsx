@@ -441,13 +441,13 @@ className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 pla
             {/* From with Autocomplete */}
             <div 
               ref={fromRef}
-              className="flex-[1.2] flex items-center px-4 md:px-5 py-3 md:py-0 gap-3 md:border-r border-gray-100 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none relative"
+              className="flex-1 flex items-center px-4 md:px-3 lg:px-5 py-3 md:py-0 gap-2 md:gap-2 lg:gap-3 md:border-r border-gray-100 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none relative"
             >
               <span className="material-symbols-outlined text-primary text-xl flex-shrink-0">
                 {type === 'flight' ? 'flight_takeoff' : type === 'train' ? 'train' : 'directions_bus'}
               </span>
               <div className="flex flex-col text-left flex-1 min-w-0">
-                <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">From</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-wide lg:tracking-widest">From</span>
                 <input 
                   type="text" 
                   value={formData.from}
@@ -459,7 +459,7 @@ className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 pla
                     }
                   }}
                   placeholder="From City"
-className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 placeholder:text-gray-500 w-full"
+                  className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 placeholder:text-gray-500 w-full"
                   autoComplete="off"
                 />
               </div>
@@ -469,13 +469,13 @@ className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 pla
             {/* To with Autocomplete */}
             <div 
               ref={toRef}
-              className="flex-[1.2] flex items-center px-4 md:px-5 py-3 md:py-0 gap-3 md:border-r border-gray-100 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none relative"
+              className="flex-1 flex items-center px-4 md:px-3 lg:px-5 py-3 md:py-0 gap-2 md:gap-2 lg:gap-3 md:border-r border-gray-100 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none relative"
             >
               <span className="material-symbols-outlined text-primary text-xl flex-shrink-0">
                 {type === 'flight' ? 'flight_land' : 'location_on'}
               </span>
               <div className="flex flex-col text-left flex-1 min-w-0">
-                <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">To</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-wide lg:tracking-widest">To</span>
                 <input 
                   type="text" 
                   value={formData.to}
@@ -486,19 +486,19 @@ className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 pla
                       fetchLocationSuggestions(formData.to, 'to');
                     }
                   }}
-                  placeholder="To city"
-className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 placeholder:text-gray-500 w-full"           
-       autoComplete="off"
+                  placeholder="To City"
+                  className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 placeholder:text-gray-500 w-full"
+                  autoComplete="off"
                 />
               </div>
               {renderSuggestions('to')}
             </div>
 
             {/* Date */}
-            <div className="flex-1 flex items-center px-4 md:px-5 py-3 md:py-0 gap-3 md:border-r border-gray-100 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none">
+            <div className="flex-1 flex items-center px-4 md:px-3 lg:px-5 py-3 md:py-0 gap-2 md:gap-2 lg:gap-3 md:border-r border-gray-100 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none">
               <span className="material-symbols-outlined text-primary text-xl flex-shrink-0">calendar_today</span>
               <div className="flex flex-col text-left w-full min-w-0">
-                <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest">Date</span>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-wide lg:tracking-widest">Date</span>
                 <input 
                   type="date" 
                   value={formData.date}
@@ -513,10 +513,10 @@ className="bg-transparent border-none p-0 text-sm font-semibold focus:ring-0 pla
         {/* Guests/Travelers and Search Button */}
         <div className="flex items-center gap-3">
           {/* People Count */}
-          <div className="flex-shrink-0 flex items-center px-4 md:px-5 py-3 md:py-0 gap-3 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none min-w-[120px]">
+          <div className="flex-shrink-0 flex items-center px-3 md:px-3 lg:px-5 py-3 md:py-0 gap-2 lg:gap-3 bg-gray-50 md:bg-transparent rounded-2xl md:rounded-none min-w-[100px] lg:min-w-[120px]">
             <span className="material-symbols-outlined text-primary text-xl flex-shrink-0">groups</span>
             <div className="flex flex-col text-left flex-1 min-w-0">
-              <span className="text-[10px] font-black text-gray-800 uppercase tracking-widest whitespace-nowrap">
+              <span className="text-[10px] font-black text-gray-800 uppercase tracking-wide lg:tracking-widest whitespace-nowrap">
                 {type === 'hotel' ? 'Guests' : 'Travelers'}
               </span>
               <input 
