@@ -382,7 +382,7 @@ export const RIDES: RideData[] = [
     vibe: 'Home on Wheels',
     price: '₹25,000/day + 18% GST',
     tag: 'Premium Experience',
-    img: '',
+    img: 'https://api.bharatcaravans.com/admin-manager/image/v1/caravanType_51/xxxhdpi/wnadererSeven.png',
     category: 'caravan',
     specs: ['250 KM Free Fuel/Day', 'Toll & Driver Included', 'Extra KM @ ₹85/km', '100% Advance Booking'],
     timing: 'Flexible – As Per Booking',
