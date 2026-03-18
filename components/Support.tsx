@@ -4,7 +4,7 @@ const Support: React.FC = () => {
   const bookingNumbers = [
     { number: '8679090502', label: 'Primary – Call & WhatsApp' },
     { number: '9560257714', label: 'Second Number' },
-    { number: '7456046441', label: 'Third Number' },
+    { number: '7060298252', label: 'Third Number' },
   ];
 
   const emails = [

@@ -25,7 +25,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const whatsappNumbers = [
     { label: 'Booking Line 1', number: '8679090502', display: '+91 86790 90502' },
     { label: 'Booking Line 2', number: '919560257714', display: '+91 95602 57714' },
-    { label: 'Booking Line 3', number: '7456046441', display: '+91 74560 46441' },
+    { label: 'Booking Line 3', number: '917060298252', display: '+91 70602 98252' },
   ];
 
   return (
